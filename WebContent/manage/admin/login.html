@@ -17,18 +17,18 @@
 				<h1>后台登录</h1>
 			</header>
 			<div class="beg-login-main">
-				<form action="/manage/login" class="layui-form" method="post"><input name="__RequestVerificationToken" type="hidden" value="fkfh8D89BFqTdrE2iiSdG_L781RSRtdWOH411poVUWhxzA5MzI8es07g6KPYQh9Log-xf84pIR2RIAEkOokZL3Ee3UKmX0Jc8bW8jOdhqo81" />
+				<form class="layui-form" lay-submit="" lay-filter="login"><input name="__RequestVerificationToken" type="hidden" value="fkfh8D89BFqTdrE2iiSdG_L781RSRtdWOH411poVUWhxzA5MzI8es07g6KPYQh9Log-xf84pIR2RIAEkOokZL3Ee3UKmX0Jc8bW8jOdhqo81" />
 					<div class="layui-form-item">
 						<label class="beg-login-icon">
                         <i class="layui-icon">&#xe612;</i>
                     </label>
-						<input type="text" name="userName" lay-verify="userName" autocomplete="off" placeholder="这里输入登录名" class="layui-input">
+						<input type="text" name="userName" id="val1" lay-verify="userName" autocomplete="off" placeholder="这里输入登录名" class="layui-input">
 					</div>
 					<div class="layui-form-item">
 						<label class="beg-login-icon">
                         <i class="layui-icon">&#xe642;</i>
                     </label>
-						<input type="password" name="password" lay-verify="password" autocomplete="off" placeholder="这里输入密码" class="layui-input">
+						<input type="password" name="password" id="val2" lay-verify="password" autocomplete="off" placeholder="这里输入密码" class="layui-input">
 					</div>
 					<div class="layui-form-item">
 						<div class="beg-pull-left beg-login-remember">
@@ -45,20 +45,48 @@
 				</form>
 			</div>
 			<footer>
-				<p>Beginner © www.zhengjinfan.cn</p>
+				<p>MyTest © www.nancarp.cn</p>
 			</footer>
 		</div>
 		<script type="text/javascript" src="../resource/plugins/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.cookie.js"></script>
+		<script type="text/javascript" src="../../resource/layui-admin/js/jquery.mkinfinite.js"></script>
 		<script>
 			layui.use(['layer', 'form'], function() {
 				var layer = layui.layer,
-					$ = layui.jquery,
-					form = layui.form();
+				form = layui.form();
 					
 				form.on('submit(login)',function(data){
-					
-					location.replace('/manage/index');
-					return false;
+					// 校验用户名、密码 
+					var name = $('#val1').val();
+					var pass = $('#val2').val();
+					if(name==null || $.trim(name)==''){
+						layer.tips('请输入帐号', '#val1', {tips: [1, '#E74C3C']});return false;
+					}
+					if(!new RegExp("^[a-zA-Z0-9_]{4,9}$").test(name)){
+						layer.tips('4到9位数字,字母,下划线', '#val1', {tips: [2, '#E74C3C']});return false;
+					}
+					if(pass==null || $.trim(pass)==''){
+						layer.tips('请输入密码', '#val2', {tips: [4, '#E74C3C']});return false;
+					}
+					if(!new RegExp("^[a-zA-Z0-9_!@#$%^&*]{6,11}$").test(pass)){
+						layer.tips('6到11位数字,字母,特殊字符', '#val2', {tips: [2, '#E74C3C']});return false;
+					}
+					// 校验通过，表单数据提交后台处理
+					$.post('/manage/userLogin', data.field, function (data) {
+						// 登陆成功
+						if (data.result) {
+							// 显示登陆成功信息，跳转到index页面
+							layer.msg(data.msg, {icon: 1, time: 1000}, function(){
+								location.replace('/manage/index');
+							});
+						} else {
+							// 登陆失败，显示登陆失败信息
+							layer.tips(data.msg, '.beg-login-main', {tips: [4, '#E74C3C']});
+						}
+					});
+					return false;//??
 				});
 			});
 		</script>
