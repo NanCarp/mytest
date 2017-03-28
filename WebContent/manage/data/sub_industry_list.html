@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title>Table</title>
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+		<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+		<style type="text/css">
+			.forpage{text-align: right;margin-top: 10px;}
+		</style>
+	</head>
+	<body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				<a href="javascript:;" onclick="<#if _add??>_add()</#if>" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" id="add"><i class="layui-icon">&#xe608;</i> 添加子级行业</a>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</blockquote>
+			<fieldset class="layui-elem-field">
+				<legend>子级行业列表</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th>序列</th>
+								<th>子级行业代码  </th>
+								<th>子级行业名称</th>
+								<th>父级行业</th>
+								<th>创建时间</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#if subindustrylist?? && subindustrylist?size gt 0>
+							<#list subindustrylist as subindustry>
+							<tr>
+								<td>${subindustry_index+1}</td>
+								<td>${subindustry.sub_industry_code}</td>
+								<td>${subindustry.sub_industry_name}</td>
+								<td>${subindustry.industry_code}${subindustry.industry_name}</td>
+								<td>${subindustry.create_time}</td>
+								<td>
+									<a onclick="<#if _edit??>_edit(${subindustry.id})</#if>" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>">编辑</a>
+									<a onclick="<#if _delete??>_delete(${subindustry.id})</#if>" class="layui-btn layui-btn-danger layui-btn-mini <#if _delete??><#else>layui-btn-disabled</#if>">删除</a>
+								</td>
+							</tr>
+							</#list>
+							<#else>
+							<tr>
+								<td colspan="6" style="text-align: center;"><span>没有数据信息</span></td>
+							</tr>
+							</#if>
+						</tbody>
+					</table>
+					<div class="forpage" id="forpage"></div>
+				</div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+		<script>
+			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				            location.replace('/data/sub_industry_list/'+e.curr);
+				        }
+				    }
+				});
+			 });
+			 // 增加
+			 function _add(){
+				 parent.open_window('添加子级行业代码', '/data/getSubIndustry', 540, 370);
+			 }
+			 
+			 // 编辑
+			 function _edit(id){
+				 parent.open_window('编辑子级行业代码', '/data/getSubIndustry/'+id, 540, 370);
+			 }
+			 
+			 // 删除
+			 function _delete(id){
+				 layui.use('layer', function(){
+					 var layer = layui.layer;
+					 parent.actconfirm('确认要删除吗？', function(){
+						$.post('/data/delSubIndustry/'+id, function(data){
+							if(data){
+								parent.layer.msg('删除成功', {time: 1000}, function(){
+									location.replace(location.href);
+								});
+							}else{
+								parent.layer.msg('删除失败', {time: 1000});
+							}
+						});
+					});				 
+				});    
+			 }	
+		</script>
+	</body>
+</html>

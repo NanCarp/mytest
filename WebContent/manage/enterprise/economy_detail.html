@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<title>企业经济情况</title>
+	</head>
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if economy??>
+				<input type="hidden" id="v0" name="id" value="${economy.id}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业名称：</label>
+					<div class="layui-input-block">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid" disabled >
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}" <#if economy.company_id==enterprisein.id>selected</#if>>${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" value="${economy.the_date}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业总收入：</label>
+					<div class="layui-input-block">
+						<input type="text" name="income" id="v3"  lay-verify="required|money" value="${economy.income}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业净利润：</label>
+					<div class="layui-input-block">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|money" value="${economy.net_profit}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业上缴税费：</label>
+					<div class="layui-input-block">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|money" value="${economy.taxation}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业R&D投入：</label>
+					<div class="layui-input-block">
+						<input type="text" name="investment" id="v6" lay-verify="required|money" value="${economy.investment}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业名称：</label>
+					<div class="layui-input-block">
+						<select name="enterpriseid" id="v1" lay-verify="enterpriseid">
+					    	<option value="0">--选择企业--</option>
+							<#list enterpriseinlist as enterprisein>
+								<option value="${enterprisein.id}">${enterprisein.enterprise_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="thedate" id="v2" lay-verify="required|thedate" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD hh:mm:ss'})"">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业总收入：</label>
+					<div class="layui-input-block">
+						<input type="text" name="income" id="v3"  lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业净利润：</label>
+					<div class="layui-input-block">
+						<input type="text" name="netprofit" id="v4" lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业上缴税费：</label>
+					<div class="layui-input-block">
+						<input type="text" name="taxation" id="v5"  lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业R&D投入：</label>
+					<div class="layui-input-block">
+						<input type="text" name="investment" id="v6" lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script>
+			layui.use('laydate', function(){
+			  var laydate = layui.laydate;
+			});
+		
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					rolename: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '不能有特殊字符';
+					    }
+					  }
+					  ,enterpriseid: function(value){
+						  if(value==0){
+							  return '请选择企业';
+						  }
+					  },
+					  money: function(value){
+							if($.trim(value)!=""){
+								if(!new RegExp("^[0-9]+(.[0-9]{1,4})?$").test(value)){
+								      return '请输入正确的金额';
+								}
+							}
+						},
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/enterprise/saveEconomy', data.field, function(data){
+							lock = false;
+							if(data.result){
+								parent.refresh_iframe();
+								layer.msg("保存成功", {time: 2000}, function(){
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+							}
+						});
+					}
+					return false;
+				});
+			});
+			
+			function _change(){
+				alert("1234");
+			}
+		</script>
+	</body>
+</html>

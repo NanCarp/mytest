@@ -1,0 +1,20 @@
+.main_container{width: 100%;height: calc(100% - 40px);padding: 20px;float: left;box-sizing: border-box;overflow: hidden;}
+.main_left{width: calc(60% - 20px);height: 100%;float: left;overflow: hidden;}
+.main_right{width: 40%;height: 100%;float: right;overflow: hidden;}
+.notice_top{width: calc(100% - 50px); height: 408px;float: left;border-radius: 5px;box-shadow: 0px 0px 20px #888;margin: 10px;padding: 0 15px;}
+.notice_down{width: calc(100% - 20px); height: calc(100% - 420px);float: left;padding: 0 10px;margin-top: 20px;}
+.notice_down_1{width: calc(33.33333% - 35px);padding: 0 10px 0 10px;height: 300px;float: left;border: 0px solid #888;margin: 0 0 10px 5px;box-shadow: 0px 0px 10px #888;}
+.notice_down_2{width: calc(33.33333% - 30px);padding: 0 10px 0 10px;height: 300px;float: left;border: 0px solid #888;margin: 0 0 10px 13px;box-shadow: 0px 0px 10px #888;}
+.notice_down_3{width: calc(33.33333% - 30px);padding: 0 10px 0 10px;height: 300px;float: left;border: 0px solid #888;margin: 0 0 10px 13px;box-shadow: 0px 0px 10px #888;}
+.no_1{width: 100%;height: 40px;text-align: left;float: left;font: 18px/40px 'Microsoft Yahei';color: #84C288;border-bottom: 1px solid #CCC;letter-spacing: 1px;font-weight: bolder;}
+.no_2{width: 100%;height: calc(100% - 41px);float: left;font: 14px/40px 'Microsoft Yahei';overflow: auto;}
+.no_2_span{width: 100%;height: 40px;border-bottom: 1px dashed #CCC;float: left;cursor: pointer;}
+.no_2_span span{font: 14px/40px 'Microsoft Yahei';float: left;text-align: left;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;}
+.no_2_span span:nth-child(1){width: 60%;}
+.no_2_span span:nth-child(2){width: 20%;text-align: center;}
+.no_2_span span:nth-child(3){width: 20%;text-align: right;color: #999;}
+.down_1_left{width: calc(100% - 80px);height: 40px;float: left;text-align: left;font: 18px/40px 'Microsoft Yahei';border-bottom: 1px solid #CCC;color: #FEA01F;letter-spacing: 1px;font-weight: bolder;}
+.down_1_right{width: 80px;height: 40px;float: right;border-bottom: 1px solid #CCC;}
+.down_1_right i{width: 60px;height: 25px;float: left;background-color: #4FB053;text-align: center;font: 12px/25px 'Microsoft Yahei';color: #FFF;cursor: pointer;margin:7.5px 10px;border-radius: 2px;}
+.content{width: 100%;height: calc(100% - 40px);float: left;font: 14px/40px 'Microsoft Yahei';overflow: auto;}
+.c_span{width: 100%;height: 40px;float: left;border-bottom: 1px dashed #CCC;overflow: hidden;white-space:nowrap; text-overflow:ellipsis;cursor: pointer;}

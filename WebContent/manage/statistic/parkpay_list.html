@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+		<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+		<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+		<title>企业管理 - 企业入驻管理</title>
+	</head>
+	<body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+				<form class="layui-form">
+				<span>
+					<input type="text" placeholder="请输入年份" name="year" class="layui-input buildlist_3"  lay-verify="year" value="${year!}">
+					<input type="text" placeholder="请输入企业名称" name="companyname" class="layui-input buildlist_3"  lay-verify="companyname" value="${companyname!}">
+					<button class="layui-btn buildlist_4 layui-btn-small " lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+					<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+					<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+					<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+					<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+				</form>
+			</blockquote>
+			<fieldset class="layui-elem-field">
+				<legend>企业列表</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th>序列</th>
+								<th width="150">公司名</th>
+								<th width="150">协议起始日期 </th>
+								<th>一季度房租应缴(元)</th>
+								<th>一季度房租实收(元)</th>
+								<th>一季度物业应缴(元)</th>
+								<th>一季度物业实收(元)</th>
+								<th>一季度水费应缴(元</th>
+								<th>二季度水费实收(元)</th>
+								<th>二季度房租应缴(元)</th>
+								<th>二季度房租实收(元)</th>
+								<th>二季度物业应缴(元)</th>
+								<th>二季度物业实收(元)</th>
+								<th>二季度水费应缴(元</th>
+								<th>二季度水费实收(元)</th>
+								<th>三季度房租应缴(元)</th>
+								<th>三季度房租实收(元)</th>
+								<th>三季度物业应缴(元)</th>
+								<th>三季度物业实收(元)</th>
+								<th>三季度水费应缴(元</th>
+								<th>三季度水费实收(元)</th>
+								<th>四季度房租应缴(元)</th>
+								<th>四季度房租实收(元)</th>
+								<th>四季度物业应缴(元)</th>
+								<th>四季度物业实收(元)</th>
+								<th>四季度水费应缴(元</th>
+								<th>四季度水费实收(元)</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#if parkpaylist?? && parkpaylist?size gt 0>
+							<#list parkpaylist as parkpay>
+							<tr>
+								<td>${parkpay_index+1}</td>
+								<td>${parkpay.company_name}</td>
+								<td>${parkpay.year}</td>
+								<td>${parkpay.should_pay_rent1}</td>
+								<td>${parkpay.paid_rent1}</td>
+								<td>${parkpay.property_costs1}</td>
+								<td>${parkpay.paid_property_charges1}</td>
+								<td>${parkpay.should_pay_water1}</td>
+								<td>${parkpay.real_water_fee1}</td>
+								<td>${parkpay.should_pay_rent2}</td>
+								<td>${parkpay.paid_rent2}</td>
+								<td>${parkpay.property_costs2}</td>
+								<td>${parkpay.paid_property_charges2}</td>
+								<td>${parkpay.should_pay_water2}</td>
+								<td>${parkpay.real_water_fee2}</td>
+								<td>${parkpay.should_pay_rent3}</td>
+								<td>${parkpay.paid_rent3}</td>
+								<td>${parkpay.property_costs3}</td>
+								<td>${parkpay.paid_property_charges3}</td>
+								<td>${parkpay.should_pay_water3}</td>
+								<td>${parkpay.real_water_fee3}</td>
+								<td>${parkpay.should_pay_rent4}</td>
+								<td>${parkpay.paid_rent4}</td>
+								<td>${parkpay.property_costs4}</td>
+								<td>${parkpay.paid_property_charges4}</td>
+								<td>${parkpay.should_pay_water4}</td>
+								<td>${parkpay.real_water_fee4}</td>
+							</tr>
+							</#list>
+							<#else>
+							<tr>
+								<td colspan="27" style="text-align: center;"><span>没有数据信息</span></td>
+							</tr>
+							</#if>
+						</tbody>
+					</table>
+					<div class="forpage" id="forpage"></div>
+				</div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+		<script>
+			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				            location.replace('/statistic/parkpaylist?pageno='+e.curr);
+				        }
+				    }
+				});
+			 });
+			 layui.use(['form','laydate'], function() {
+					var form = layui.form(),
+					layer = layui.layer;
+					
+					form.verify({
+						companyname: function(value){
+							if($.trim(value)!=""){
+								if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							    	return '不能有特殊字符';
+							    }
+							}
+						},
+						year: function(value){
+							if($.trim(value)!=""){
+								if(!new RegExp("^[0-9\s·]+$").test(value)){
+									return '请输入正确年份';
+								}
+							}
+						},
+					});   
+					
+					form.on('submit(_search)', function(data){
+						var year = data.field.year;
+						var companyname = data.field.companyname;
+						location.replace('/statistic/parkpaylist?pageno=1&fstate='+fstate+'&year='+year+'&companyname='+companyname);
+						return false;
+					});
+					
+					form.on('submit(_export)', function(data){
+						var year = data.field.year;
+						var companyname = encodeURI($.trim(data.field.companyname));
+					    window.open('/statistic/exportPayment/'+year+'-'+companyname, '_blank');
+						return false;
+					});
+				});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+	<link rel="stylesheet" type="text/css" href="../../resource/zTree/css/demo.css" />
+	<link rel="stylesheet" type="text/css" href="../../resource/zTree/css/zTreeStyle/zTreeStyle.css" />
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+			<#if file??>
+				<input type="hidden" id="v0" name="id" value="${file.id!}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">接收人：</label>
+					<div class="layui-input-block">
+        				<ul id="treeDemo" class="ztree"></ul>
+        			</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">文件名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="file_name" lay-verify="required|filename" value="${file.file_name!}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">附件：</label>
+					<div class="layui-input-block" id="fj">
+						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file">
+        				<div id="url"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">接收人：</label>
+					<div class="layui-input-block">
+	        			<ul id="treeDemo" class="ztree"></ul>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">文件名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="file_name" id="v1"  lay-verify="required|filename" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">附件：</label>
+					<div class="layui-input-block" id="fj">
+						<input type="file" name="file1" id="file" lay-type="file" class="layui-upload-file" >
+        				<div id="url"></div>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</#if>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script type="text/javascript" src="../../resource/zTree/js/jquery.ztree.core-3.5.js"></script>
+		<script type="text/javascript" src="../../resource/zTree/js/jquery.ztree.excheck-3.5.js"></script>
+		<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
+		<script>
+			var id='${id!}',mid='${fid!}';
+			var farr = new Array();
+			var setting = {
+				check: {
+					enable: true
+				},
+				data: {
+					simpleData: {
+						enable: true
+					}
+				}
+			}
+			var zNodes = [];
+			var headarr = mid.split(',');
+			init();
+			function init(){
+				$.post('/filemanage/getParkhead', function(data){
+					$(data).each(function(){
+						var str = {};
+						str["id"] = this.id;
+						str["name"] = this.name;
+						str["pId"] = this.pid;
+						if(this.pid==0){
+							str["open"] = true;
+						}
+						for(var o in headarr){
+							if(headarr[o] == this.id){
+								str["checked"] = true;
+							}
+						}
+						zNodes.push(str);
+					});
+					$.fn.zTree.init($("#treeDemo"), setting, zNodes);
+				});
+			}
+		
+			//文件列表加载
+			$(function(){
+				farr = '${farr!}'.split(",");
+				if(farr.length > 0){
+					for(var i in farr){
+						if(farr[i] != ''){
+						   $('#url').append('<p><span style="width: 90%;float: left;">'+farr[i]+'</span><a href="javascript:;" onclick="del(this)" style="width: 10%;float: left;"><i class="layui-icon" title="删除">&#x1006;</i></a></br></p>');
+						}
+					}
+				}
+			});
+			function del(_obj){
+				$(_obj).parent('p').remove();
+			}
+			layui.use(['form','upload'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				var upload = layui.upload({
+					elem: '#file' //指定原始元素，默认直接查找class="layui-upload-file"
+					,url: '/filemanage/uploadfile'
+					,method: 'post' //上传接口的http类型
+					,success: function(data){
+					   $('#url').append('<p><span style="width: 90%;float: left;">'+data.url+'</span><a href="javascript:;" onclick="del(this)" style="width: 10%;float: left;"><i class="layui-icon" title="删除">&#x1006;</i></a></br></p>');
+					 }
+				}); 
+				
+				form.verify({
+					filename: function(value) {
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)) {
+							return '不能含有特殊字符';
+						}
+					}
+				});
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					var treeObj = $.fn.zTree.getZTreeObj("treeDemo");
+					var nodes = treeObj.getCheckedNodes(true);
+					var myArray = new Array(nodes.length);
+					for (var a = 0; a < nodes.length; a++) {
+						myArray[a] = nodes[a].id;
+					}
+					if(myArray == 0){
+						layer.msg('请选择园区主任', {icon: 5});return false;
+					}
+					var file_url = "";
+					$('#url p > span').each(function(k, v){
+						if(k + 1 == $('#url p > span').length){
+							file_url += $(this).html();
+						}else{
+							file_url += $(this).html()+',';
+						}
+					});
+					if($('#url p > span').length == 0){
+						layer.msg('您未添加附件！', {icon: 5});return false;
+					}
+					var id = $("#v0").val();
+					var recipient = myArray.join().replace('9999,', '');
+					var file_name = data.field.file_name;
+					var datajson = {'id': id,'recipient': recipient, 'file_name': file_name, 'file_url': file_url};
+					if(lock){
+						$.post('/filemanage/saveFile', datajson, function(data){
+							lock = false;
+							if(data){
+								parent.refresh_iframe();
+								layer.msg("保存成功", {time: 2000}, function(){
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

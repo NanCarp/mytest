@@ -1,0 +1,138 @@
+<html>
+<head>
+<meta charset="UTF-8">
+<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+<title>企业管理 - 企业经济情况</title>
+</head>
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote">
+		<form class="layui-form">
+			<input type="text" placeholder="请输入企业名称" name="enterprisename" class="layui-input buildlist_3 " lay-filter="enterprisename" lay-verify="enterprisename" value="${enterprisename!}" id="enterprisename">
+			<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+			<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" onclick="<#if _add??>_add()</#if>"><i class="layui-icon ">&#xe608;</i> 添加企业经济情况</a>
+			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+			<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+		</form>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend>企业列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>时间</th>
+							<th>企业名称</th>
+							<th>企业总收入（万元）</th>
+							<th>企业净利润(万元)</th>
+							<th>企业上缴税费(万元)</th>
+							<th>企业R&D投入(万元) </th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#if economylist?? && economylist?size gt 0>
+						<#list economylist as economy>
+						<tr>
+							<td>${economy_index+1}</td>
+							<td>${economy.the_date}</td>
+							<td>${economy.company_name}</td>
+							<td>${economy.income}</td>
+							<td>${economy.net_profit}</td>
+							<td>${economy.taxation}</td>
+							<td>${economy.investment}</td>
+							<td>
+								<a onclick="<#if _edit??>_edit(${economy.id})</#if>" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>">编辑</a>
+								<a onclick="<#if _delete??>_delete(${economy.id})</#if>" class="layui-btn layui-btn-danger layui-btn-mini <#if _delete??><#else>layui-btn-disabled</#if>">删除</a>
+							</td>
+						</tr>
+						</#list> <#else>
+						<tr>
+							<td colspan="8" style="text-align: center;"><span>没有数据信息</span></td>
+						</tr>
+						</#if>
+					</tbody>
+				</table>
+				<div class="forpage" id="forpage"></div>
+			</div>
+		</fieldset>
+	</div>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript"
+		src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				            location.replace('/enterprise/economy_list?pageno='+e.curr);
+				        }
+				    }
+				});
+			 });
+			 
+			 // 增加
+			 function _add(){
+				 parent.open_window('添加企业经济', '/enterprise/getEconomy', 540, 370);
+			 }
+			 
+			 // 编辑
+			 function _edit(id){
+				 parent.open_window('编辑企业经济', '/enterprise/getEconomy/'+id, 540, 370);
+			 }
+			 
+			 // 删除
+			 function _delete(id){
+				 layui.use('layer', function(){
+					 var layer = layui.layer;
+					 parent.actconfirm('确认要删除吗？', function(){
+						$.post('/enterprise/delEconomy/'+id, function(data){
+							if(data){
+								layer.msg('删除成功', {time: 1000}, function(){
+									location.replace(location.href);
+								});
+							}else{
+								layer.msg('删除失败', {time: 1000});
+							}
+						});
+					});				 
+				});    
+			 }
+			 
+			 layui.use(['form'], function() {
+					var form = layui.form(),
+					layer = layui.layer;
+					
+					form.verify({
+						enterprisename: function(val){
+							if($.trim(val)!=''){
+								if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+									return '不能有特殊字符';
+								}
+							}
+						}
+					});
+					
+					form.on('submit(_search)', function(data){
+						var enterprisename = data.field.enterprisename;
+						location.replace('/enterprise/economy_list?pageno=1&enterprisename='+enterprisename);
+						return false;
+					});					
+				})
+			 
+			 
+		</script>
+</body>
+
+</html>

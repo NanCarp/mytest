@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<style type="text/css">
+			.all{margin: 15px;box-sizing: border-box;font: 13px/38px 'Microsoft Yahei';}
+			.all span{width: 33.33333%; height: 100%; float: left;}
+			.jftime{float: left;width: 45%;}
+			.sr-fw{float: left;width: 155px;display: inline-block;vertical-align: middle;position: relative;}
+			.sr-h{float: left;display: block;padding: 7px 0;margin:0 10px;line-height: 20px;}
+			.layui-form-item label{padding: 9px 3px;width: 104px;}
+			div[class^="layui-form-item"]{height: 47px;}
+		</style>
+		<title>按钮详情</title>
+	</head>
+	<body>
+		<div class="all">
+		<form class="layui-form" id="search">
+		<form class="layui-form">
+			<span>
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司名：</label>
+					<div class="layui-input-block">
+						<input type="text" name="company_name" placeholder="请输入公司名" value="${company_name!}" lay-verify="company_name" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司类型：</label>
+					<div class="layui-input-block">
+						<input type="text" name="company_type" placeholder="请输入公司类型" lay-verify="company_type" value="${company_type!}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">缴费时间：</label>
+					    <div class="layui-input-block">
+							<input class="layui-input jftime" name="mindate" placeholder="请选择日期" onclick="layui.laydate({elem: this, format: 'YYYY-MM-DD'})" value="${mindate!}">
+							<span style="float: left;line-height: 38px;margin: 0 10px;width: 3px;">-</span>
+							<input class="layui-input jftime" name="maxdate" placeholder="请选择日期" onclick="layui.laydate({elem: this, format: 'YYYY-MM-DD'})" value="${maxdate!}">
+						</div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">总收入：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="minsr" placeholder="万元" value="${minsr!}" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="maxsr" placeholder="万元" value="${maxsr!}" vlay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">净利润：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="income_min" placeholder="万元" value="${income_min!}" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="income_max" placeholder="万元" value="${income_max!}" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">上缴税费：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="tax_min" value="${tax_min!}" placeholder="万元" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="tax_max" value="${tax_max!}" placeholder="万元" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">R&D投入：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="rd_min" placeholder="万元" value="${rd_min!}" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="rd_max" placeholder="万元" value="${rd_max!}" lay-verify="coom" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			</span>
+			<span style="margin-top: 40px;">
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">博士：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="doctor_min" placeholder="人" value="${doctor_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="doctor_max" placeholder="人" value="${doctor_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			     
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">大专以上：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="junior_min" placeholder="人" value="${junior_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="junior_max" placeholder="人" value="${junior_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">留学人员：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="styabroad_min" placeholder="人" lay-verify="nun" value="${styabroad_min!}" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="styabroad_max" placeholder="人" lay-verify="nun" value="${styabroad_max!}" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">千人计划人数：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="thousand_min" placeholder="人" value="${thousand_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="thousand_max" placeholder="人" value="${thousand_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">应届大学毕业生：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="university_min" placeholder="人" value="${university_min!}" lay-verify="nun"  maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="university_max" placeholder="人" value="${university_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			</span>
+			<span>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">缴纳保险情况：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="taxstatus_min" placeholder="个" value="${taxstatus_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="taxstatus_max" placeholder="个" value="${taxstatus_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">当年新增保险：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="addtax_min" placeholder="个" value="${addtax_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="addtax_max" placeholder="个" value="${addtax_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">申请知识产权：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="intellapply_min" placeholder="个" value="${intellapply_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="intellapply_max" placeholder="个" value="${intellapply_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			     
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">批准知识产权：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="aprintell_min" placeholder="个" value="${aprintell_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="aprintell_max" placeholder="个" value="${aprintell_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">发明专利：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="invent_min" placeholder="个" lay-verify="nun" value="${invent_min!}" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="invent_max" placeholder="个" lay-verify="nun" value="${invent_max!}" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">软件著作权：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="software_min" placeholder="个" value="${software_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="software_max" placeholder="个" value="${software_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			    <div class="layui-form-item">
+				    <div class="layui-inline">
+				        <label class="layui-form-label">软件产品：</label>
+					    <div class="sr-fw">
+					      <input type="text" name="product_min" placeholder="个" value="${product_min!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    	<div class="sr-h">-</div>
+					    <div class="sr-fw">
+					       <input type="text" name="product_max" placeholder="个" value="${product_max!}" lay-verify="nun" maxlength="6" autocomplete="off" class="layui-input sr">
+					    </div>
+				    </div>
+				</div>
+			</span>	
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 12%;margin: 0 581px;" lay-submit="" lay-filter="save">查询</button>
+					</div>
+				</div>
+				<input type="hidden" name="type" value="1">
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+				company_name:  function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+							return '请输入正确的区域名';
+							}
+						}
+					}
+				,nun:function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[0-9]*$").test(val)){
+							return '请输入正确的格式';
+							}
+						}                                   
+					}
+				,coom:function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(val)){
+							return '保留小数点后两位';
+							}
+						}
+				}
+				,company_type:function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+							return '请输入正确的格式';
+						}
+					}
+				}
+			}); 
+				//监听提交
+				form.on('submit(save)', function(data) {
+					$.post('/statistic/comfind', data.field, function(d){
+						if(d){
+							layer.msg('查询成功', {time: 500}, function(){
+								parent.go_iframe();
+							});
+						}else{
+							layer.msg('查询失败', {time: 500});
+						}
+					});
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

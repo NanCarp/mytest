@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>园区管理安全检查记录</title>
+</head>
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+	<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+	<style>
+		.forpage{text-align: right;margin-top: 10px;}
+	</style>
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote">
+			<form class="layui-form">
+				<div class="layui-input-block buildlist_0">
+					<select name="fstate" id="v0">
+				    	<option value="9" >--检查情况--</option>
+				    	<option value="1" <#if fstate==1>selected</#if>>已检查</option>
+				    	<option value="0" <#if fstate==0>selected</#if>>未检查</option>
+					</select>
+				</div>
+				<div class="layui-input-block buildlist_1">
+					<input class="layui-input" placeholder="请输入检查时间" onclick="layui.laydate({elem: this,format: 'YYYY-MM'})" name="sdate" value="${sdate!}">
+				</div>
+				<input type="text" placeholder="请输入公司名" id="v3" name="company_name" lay-verify="company_name" class="layui-input buildlist_2" value="${company_name!}"  maxlength="10">
+				<button class="layui-btn buildlist_4 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+				<button class="layui-btn buildlist_4 layui-btn-small <#if _export??><#else>layui-btn-disabled</#if>" lay-submit="" lay-filter="<#if _export??>_export</#if>"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+				<a href="javascript:;" class="layui-btn layui-btn-small" id="add" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加检查记录</a>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</form>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend class="layui-field-box">安全检查记录列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>被检查单位</th>
+							<th>安全工作生产检查</th>
+							<th>检查时间</th>
+							<th>检查人员</th>
+							<th>整改时间</th>
+							<th>整改责任人</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+						<#if safeinspectlist?? && safeinspectlist?size gt 0>
+						<#list safeinspectlist as record>
+						<tr>
+							<td>${record_index+1}</td>
+							<td>${record.company_name}</td>
+							<td>${record.is_rectification?string('已检查','未检查')}</td>
+							<td>${record.check_time?substring(0,10)}</td>
+							<td>${record.examiner}</td>
+							<td>${record.rectification_time?substring(0,10)}</td>
+							<td>${record.rectification_man}</td>
+							<td>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${record.id})</#if>">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini"  onclick="<#if _delete??>_delete(${record.id})</#if>">删除</a>
+								<a href="javascript:;" class="layui-btn layui-btn-mini layui-btn-normal <#if _download??><#else>layui-btn-disabled</#if>" onclick="<#if _download??>_download(${record.id})</#if>">下载</a>
+							</td>
+						</tr>
+						</#list>
+						<#else>
+							<td colspan="8" style="text-align: center"><span>没有数据信息</span></td>
+						</#if>
+						</tbody>
+				</table>
+				<div id="forpage" class="forpage"></div>
+			</div>
+		</fieldset>		
+	</div>
+</body>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+	var fstate='${fstate!}',company_name='${company_name!}',sdate='${sdate!}';
+	$(function(){
+		 laypage({
+		    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+		    pages: ${totalpage}, //总页数
+		    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+		    groups: 5, //连续显示分页数
+		    curr: ${pageno},
+		    jump: function(e, first){ //触发分页后的回调
+		        if(!first){ //一定要加此判断，否则初始时会无限刷新
+		            location.replace('/parkmanage/safetyrecord?pageno='+e.curr+'&fstate='+fstate+'&company_name='+company_name+'&sdate='+sdate);
+		        }
+		    }
+		});
+	 });
+	function _add(){
+		parent.open_window("添加安全检查记录","/parkmanage/getSaftyRecord",540,370);
+	}
+	function _edit(id){
+		parent.open_window("修改安全检查记录","/parkmanage/getSaftyRecord/"+id,540,370);
+	}
+	 function _delete(id){
+		 layui.use('layer', function(){
+			 var layer = layui.layer;
+			 parent.actconfirm('确认要删除吗？', function(){
+				$.post('/parkmanage/delsafeRecord/'+id, function(data){
+					if(data){
+						parent.layer.msg('删除成功', {time: 1000}, function(){
+							location.replace(location.href);
+						});
+					}else{
+						parent.layer.msg('删除失败', {time: 1000});
+					}
+				});
+			});				 
+		});    
+	 }
+	// 下载
+	 function _download(id){
+		 window.open('/parkmanage/exportWord/'+id, '_blank');
+	 }
+	 layui.use(['form','laydate'], function() {
+			var form = layui.form(),
+			layer = layui.layer;
+			var laydate = layui.laydate;
+
+			form.verify({
+			company_name: function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+							return '请输入正确格式的编号';
+						}
+					}
+				}
+			});  
+			
+			form.on('submit(_search)', function(data){
+				var fstate = data.field.fstate;
+				var sdate = data.field.sdate;
+				var company_name =data.field.company_name;
+				location.replace('/parkmanage/safetyrecord?pageno=1&fstate='+fstate+'&company_name='+company_name+'&sdate='+sdate);
+				return false;
+			});
+			
+			form.on('submit(_export)', function(data){
+				var fstate = data.field.fstate;
+				var astate = data.field.sdate;
+				var floorno = data.field.floorno;
+				var areano = data.field.areano;
+			    window.open('/parkmanage/exportSafeRecord?fstate='+fstate+'&company_name='+company_name+'&sdate='+sdate, '_blank');
+				return false;
+			});
+		 })
+	</script>
+</html>

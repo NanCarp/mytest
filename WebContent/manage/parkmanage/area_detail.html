@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>区域管理详情</title>
+</head>
+<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if Area??>
+				<input type="hidden" value="${Area.id}" id="id" name="id">
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域名：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areaname" id="v1"  lay-verify="required|areaname" value="${Area.area_name}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">朝向：</label>
+					<div class="layui-input-block">
+						<!-- <input type="text" name="areadirect" id="v2"  lay-verify="required|areadirect" value="${Area.direction}" autocomplete="off" class="layui-input"> -->
+					<select name="areadirect" id="v1">
+				    	<option value="朝向" >--朝向--</option>
+				    	<option value="东" <#if Area.direction=="东">selected</#if>>东</option>
+				    	<option value="南" <#if Area.direction=="南">selected</#if>>南</option>
+				    	<option value="西" <#if Area.direction=="西">selected</#if>>西</option>
+				    	<option value="北" <#if Area.direction=="北">selected</#if>>北</option>
+					</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域编号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areano" id="v3"  lay-verify="required|areano" value="${Area.area_no}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼号：</label>
+					<div class="layui-input-block">
+						<select name="buildNo" id="v4" lay-verify="buildNo">
+					    	<option value="0" selected>--选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}"<#if buildNo.id?string=Area.building_no>selected</#if>>${buildNo.building_NO}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">层号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areafloorno" id="v5"  lay-verify="required|areafloorno" value="${Area.floor_no}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">面积/平方米：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="${Area.area}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域状态：</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="areastatus" value="false" title="未入驻"<#if Area.status=false>checked</#if>>
+      					<input type="radio" name="areastatus" value="true" title="已入驻"<#if Area.status=true>checked</#if>>
+      				</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域名：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areaname" id="v1"  lay-verify="required|areaname" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">朝向：</label>
+					<div class="layui-input-block">
+					<select name="areadirect" id="v1">
+				    	<option value="朝向" >--朝向--</option>
+				    	<option value="东" >东</option>
+				    	<option value="南" >南</option>
+				    	<option value="西" >西</option>
+				    	<option value="北" >北</option>
+					</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域编号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areano" id="v3"  lay-verify="required|areano" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">楼号：</label>
+					<div class="layui-input-block">
+						<select name="buildNo" id="v4" lay-verify="buildNo">
+							<option value="0">--请选择楼号--</option>
+							<#list buildNos as buildNo>
+							<option value="${buildNo.id}">${buildNo.building_NO}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">层号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areafloorno" id="v5"  lay-verify="required|areafloorno" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">面积/平方米：</label>
+					<div class="layui-input-block">
+						<input type="text" name="areasize" id="v6"  lay-verify="required|areasize" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">区域状态：</label>
+    				<div class="layui-input-block">
+     					<input type="radio" name="areastatus" value="false" title="未入驻" checked="checked">
+      					<input type="radio" name="areastatus" value="true" title="已入驻">
+      				</div>
+				</div>
+				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					areaname: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '不能有特殊字符';
+					    }
+					  }
+					  ,buildNo: function(value){
+						  if(value==0){
+							  return '请选择楼号';
+						  }
+					  }
+					  ,areano: function(value){
+						 if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							  return '不能有特殊字符';
+							 }
+					 }
+					  ,areasize:function(value){
+							if(!new RegExp("^[0-9]*$").test(value)){
+								return '请输入数字';
+							}
+					}
+					 ,the_company: function(value){
+						    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+							      return '不能有特殊字符';
+							}
+					}
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/parkmanage/saveArea', data.field, function(data){
+							lock = false;
+							if(data.result){
+								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+								lock = true;
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

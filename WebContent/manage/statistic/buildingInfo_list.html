@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+		<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+		<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+		<title>查询统计 - 楼区数据统计</title>
+	</head>
+	<body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+			<form class="layui-form">
+				<div class="layui-input-block buildlist_0">
+					<select name="fstate" id="v0">
+				    	<option value="9" <#if fstate==9>selected</#if>>--选择楼层状态--</option>
+				    	<option value="1" <#if fstate==1>selected</#if>>已满</option>
+				    	<option value="0" <#if fstate==0>selected</#if>>未满</option>
+					</select>
+				</div>
+				<div class="layui-input-block buildlist_1">
+					<select name="astate" id="v1">
+				    	<option value="9" <#if astate==9>selected</#if>>--选择区域状态--</option>
+				    	<option value="1" <#if astate==1>selected</#if>>已入驻</option>
+				    	<option value="0" <#if astate==0>selected</#if>>未入驻</option>
+					</select>
+				</div>
+				<input type="text" placeholder="请输入楼号" id="v2" name="floorno" lay-verify="num" class="layui-input buildlist_2" value="${floorno!}" maxlength="10">
+				<input type="text" placeholder="请输入区域编号" id="v3" name="areano" lay-verify="num" class="layui-input buildlist_3" value="${areano!}"  maxlength="10">
+				<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_search"><i class="layui-icon">&#xe615;</i> 查询</button>
+				<button class="layui-btn buildlist_4 layui-btn-small" lay-submit="" lay-filter="_export"><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</form>
+			</blockquote>
+			<fieldset class="layui-elem-field">
+				<legend>楼区数据统计</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th>序列</th>
+								<th>楼号 </th>
+								<th>层号 </th>
+								<th>可用面积(平方米)</th>
+								<th>楼层状态 </th>
+								<th>区域名 </th>
+								<th>区域编号</th>
+								<th>朝向</th>
+								<th>面积(平方米)</th>
+								<th>区域状态</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#if buildlist?? && buildlist?size gt 0>
+							<#list buildlist as building>
+							<tr>
+								<td>${building_index+1}</td>
+								<td>${building.building_NO!}</td>
+								<td>${building.floor_no!}</td>
+								<td>${building.usable_area!}</td>
+								<td><#if building.bstate==0>未满<#else>已满</#if></td>
+								<td>${building.area_name!}</td>
+								<td>${building.area_no!}</td>
+								<td>${building.direction!}</td>
+								<td>${building.area!}</td>
+								<td><#if building.astate??><#if building.astate?string('1','0')=='1'>已入驻<#else>未入驻</#if></#if></td>
+							</tr>
+							</#list>
+							<#else>
+							<tr>
+								<td colspan="10" style="text-align: center;"><span>没有数据信息</span></td>
+							</tr>
+							</#if>
+						</tbody>
+					</table>
+					<div class="forpage" id="forpage"></div>
+				</div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+		<script>
+			//定义callback方法，用于回调
+			function callback(){
+				refreshWin();
+			}
+			//刷新当前页面
+			function refreshWin(){
+				window.location.href = location.replace(location.href);	
+			}
+			
+			 var fstate='${fstate!}', astate='${astate!}', floorno='${floorno!}', areano='${areano!}';
+			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				            location.replace('/statistic/buildinglist?pageno='+e.curr+'&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
+				        }
+				    }
+				});
+			 });
+			 
+			 layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					num: function(val){
+						if($.trim(val)!=''){
+							if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+								return '请输入正确格式的编号';
+							}
+						}
+					}
+				});
+				
+				form.on('submit(_search)', function(data){
+					var fstate = data.field.fstate;
+					var astate = data.field.astate;
+					var floorno = data.field.floorno;
+					var areano = data.field.areano;
+					location.replace('/statistic/buildinglist?pageno=1&fstate='+fstate+'&astate='+astate+'&floorno='+floorno+'&areano='+areano);
+					return false;
+				});
+				
+				form.on('submit(_export)', function(data){
+					var fstate = data.field.fstate;
+					var astate = data.field.astate;
+					var floorno = data.field.floorno;
+					var areano = data.field.areano;
+				    window.open('/statistic/exportbuilding/'+fstate+'-'+astate+'-'+floorno+'-'+areano, '_blank');
+					return false;
+				});
+			 })
+		</script>
+	</body>
+</html>

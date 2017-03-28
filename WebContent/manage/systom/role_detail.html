@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<title>角色详情</title>
+	</head>
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if role??>
+				<input type="hidden" id="v0" name="id" value="${role.id}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="rolename" id="v1"  lay-verify="required|rolename" value="${role.role_name}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所在部门：</label>
+					<div class="layui-input-block">
+						<select name="department" id="v2" lay-verify="depart">
+					    	<option value="0">--选择部门--</option>
+							<#list departs as depart>
+							<option value="${depart.id}" <#if depart.id=role.department_id>selected</#if>>${depart.department_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色描述：</label>
+					<div class="layui-input-block">
+						<input type="text" name="desc" id="v3" value="${role.role_desc}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色名称：</label>
+					<div class="layui-input-block">
+						<input type="text" id="v1"  name="rolename" lay-verify="required|rolename" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所在部门：</label>
+					<div class="layui-input-block">
+						<select name="department" id="v2" lay-verify="depart">
+					    	<option value="0" selected>--选择部门--</option>
+							<#list departs as depart>
+							<option value="${depart.id}">${depart.department_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">角色描述：</label>
+					<div class="layui-input-block">
+						<input type="text" id="v3" name="desc" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					rolename: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '不能有特殊字符';
+					    }
+					  }
+					  ,depart: function(value){
+						  if(value==0){
+							  return '请选择部门';
+						  }
+					  }
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/systom/saveRole', data.field, function(data){
+							lock = false;
+							if(data.result){
+								parent.refresh_iframe();
+								layer.msg("保存成功", {time: 2000}, function(){
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

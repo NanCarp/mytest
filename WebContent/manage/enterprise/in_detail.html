@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="renderer" content="webkit">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="format-detection" content="telephone=no">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<title>企业入驻详情</title>
+	</head>
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if enterprisein??>
+				<input type="hidden" id="v0" name="id" value="${enterprisein.id}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="enterprisename" id="v1"  lay-verify="required|name" value="${enterprisein.enterprise_name}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属行业：</label>
+					<div class="layui-input-block">
+						<select name="superiorindustryid" id="v1_1" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
+					    	<option value="0">--选择父级行业--</option>
+							<#list superiorindustrylist as superiorindustry>
+								<option value="${superiorindustry.id}"<#if superiorindustry.id=enterprisein.superior_industry_id>selected</#if>>${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+					<div style="margin:5px 0 0 0;"></div>
+					<div class="layui-input-block">
+						<select name="subindustryid" id="v1_2" lay-verify="subindustryid" lay-filter="subindustryid">
+							<option value="0">--选择子级行业--</option>
+							<#list subindustrylist as subindustry>
+								<option value="${subindustry.id}" <#if subindustry.id=enterprisein.sub_industry_id>selected</#if> >${subindustry.sub_industry_code}${subindustry.sub_industry_name}</option>
+					    	</#list>
+						</select>
+					</div>
+					<div style="margin:5px 0 0 0;"></div>
+					<div class="layui-input-block">
+						<select name="industrycode" id="v1_3" lay-verify="industrycode">
+							<option value="0">--选择行业--</option>
+					    	<#list industrycodelist as industrycode>
+								<option value="${industrycode.industry_code}" <#if industrycode.industry_code?number==enterprisein.industry>selected</#if> >${industrycode.industry_code}${industrycode.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">组织机构代码：</label>
+					<div class="layui-input-block">
+						<input type="text" name="organizationalcode" id="v3"  lay-verify="required|organizationalcode" value="${enterprisein.organizational_code}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">工商注册号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registrationnumber" id="v4" lay-verify="required|number" value="${enterprisein.registration_number}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">法人代表：</label>
+					<div class="layui-input-block">
+						<input type="text" name="representative" id="v5"  lay-verify="required|name" value="${enterprisein.representative}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">联系方式：</label>
+					<div class="layui-input-block">
+						<input type="text" name="contact" id="v6" lay-verify="required|phone" value="${enterprisein.contact}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册地址：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registeredaddress" id="v7"  lay-verify="required|registeredaddress" value="${enterprisein.registered_address}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册类型：</label>
+					<div class="layui-input-block">
+						<select name="registrationtype" id="v8" lay-verify="required|registrationtype">
+							<option value="0">--选择注册类型--</option>
+							<option value="100" <#if enterprisein.registration_type=100 >selected</#if>>100内资企业</option>
+							<option value="110" <#if enterprisein.registration_type=110 >selected</#if>>110国有企业</option>
+							<option value="120" <#if enterprisein.registration_type=120 >selected</#if>>120集体企业</option>
+							<option value="130" <#if enterprisein.registration_type=130 >selected</#if>>130股份合作企业</option>
+							<option value="140" <#if enterprisein.registration_type=140 >selected</#if>>140联营企业</option>
+							<option value="141" <#if enterprisein.registration_type=141 >selected</#if>>141国有联营企业</option>
+							<option value="142" <#if enterprisein.registration_type=142 >selected</#if>>142集体联营企业</option>
+							<option value="143" <#if enterprisein.registration_type=143 >selected</#if>>143国有与集体联营企业</option>
+							<option value="149" <#if enterprisein.registration_type=149 >selected</#if>>149其他联营企业</option>
+							<option value="150" <#if enterprisein.registration_type=150 >selected</#if>>150有限责任公司</option>
+							<option value="151" <#if enterprisein.registration_type=151 >selected</#if>>151国有独资公司</option>
+							<option value="159" <#if enterprisein.registration_type=159 >selected</#if>>159其他有限责任公司</option>
+							<option value="160" <#if enterprisein.registration_type=160 >selected</#if>>160股份有限公司</option>
+							<option value="170" <#if enterprisein.registration_type=170 >selected</#if>>170私营企业</option>
+							<option value="171" <#if enterprisein.registration_type=171 >selected</#if>>171私营独资企业</option>
+							<option value="172" <#if enterprisein.registration_type=172 >selected</#if>>172私营合伙企业</option>
+							<option value="173" <#if enterprisein.registration_type=173 >selected</#if>>173私营有限责任公司</option>
+							<option value="174" <#if enterprisein.registration_type=174 >selected</#if>>174私营股份有限公司</option>
+							<option value="190" <#if enterprisein.registration_type=190 >selected</#if>>190其他企业</option>
+							<option value="200" <#if enterprisein.registration_type=200 >selected</#if>>200港、澳、台商投资企业</option>
+							<option value="210" <#if enterprisein.registration_type=210 >selected</#if>>210合资经营企业（港或澳、台资）</option>
+							<option value="220" <#if enterprisein.registration_type=220 >selected</#if>>220合作经营企业（港或澳、台资）</option>
+							<option value="230" <#if enterprisein.registration_type=230 >selected</#if>>230港、澳、台商独资经营企业</option>
+							<option value="240" <#if enterprisein.registration_type=240 >selected</#if>>240港、澳、台商投资股份有限公司</option>
+							<option value="300" <#if enterprisein.registration_type=300 >selected</#if>>300外商投资企业</option>
+							<option value="310" <#if enterprisein.registration_type=310 >selected</#if>>310中外合资经营企业</option>
+							<option value="320" <#if enterprisein.registration_type=320 >selected</#if>>320中外合作经营企业</option>
+							<option value="330" <#if enterprisein.registration_type=330 >selected</#if>>330外资企业</option>
+							<option value="340" <#if enterprisein.registration_type=340 >selected</#if>>340外商投资股份有限公司</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registrationtime" id="v9"  lay-verify="required|date" value="${enterprisein.registration_time?substring(0,10)}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册资本(万元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|money" value="${enterprisein.registered_capital}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业入驻时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="intime" id="v11"  lay-verify="required|date" value="${enterprisein.in_time?substring(0,10)}" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否软件企业：</label>
+					<div class="layui-input-block">
+						<input type="radio" name="issoftware" value="1" title="是"<#if enterprisein.is_software==true>checked=""</#if>>
+      					<input type="radio" name="issoftware" value="0" title="否"<#if enterprisein.is_software==false>checked=""</#if>>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">办公房间号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="roomnumber" id="v13"  lay-verify="required|number" value="${enterprisein.room_number}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">办公面积：</label>
+					<div class="layui-input-block">
+						<input type="text" name="officespace" id="v14" lay-verify="required|number" value="${enterprisein.office_space}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租单价：</label>
+					<div class="layui-input-block">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|money" value="${enterprisein.unit_price}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业类型：</label>
+					<div class="layui-input-block">
+						<select name="enterprisetype" id="v16" lay-verify="required|enterprisetype">
+							<option value="0">--选择企业类型--</option>
+							<#if typelist?? && typelist?size gt 0>
+							<#list typelist as type>
+							<option value="${type.id}" <#if enterprisein.enterprise_type==type.id>selected</#if> >${type.name}</option>
+							</#list>
+							</#if>
+						</select>
+					</div>
+				</div>
+				<#else>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业名称：</label>
+					<div class="layui-input-block">
+						<input type="text" name="enterprisename" id="v1"  lay-verify="required|name" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">所属行业：</label>
+					<div class="layui-input-block">
+						<select name="superiorindustryid" id="v1_1" lay-verify="superiorindustryid" lay-filter="superiorindustryid">
+					    	<option value="0">--选择父级行业--</option>
+							<#list superiorindustrylist as superiorindustry>
+								<option value="${superiorindustry.id}">${superiorindustry.industry_code}${superiorindustry.industry_name}</option>
+							</#list>
+						</select>
+					</div>
+					<div style="margin:5px 0 0 0;"></div>
+					<div class="layui-input-block">
+						<select name="subindustryid" id="v1_2" lay-verify="subindustryid" lay-filter="subindustryid">
+					    	<option value="0">--选择子级行业--</option>
+						</select>
+					</div>
+					<div style="margin:5px 0 0 0;"></div>
+					<div class="layui-input-block">
+						<select name="industrycode" id="v1_3" lay-verify="industrycode">
+					    	<option value="0">--选择行业--</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">组织机构代码：</label>
+					<div class="layui-input-block">
+						<input type="text" name="organizationalcode" id="v3"  lay-verify="required|organizationalcode" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">工商注册号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registrationnumber" id="v4" lay-verify="required|number" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">法人代表：</label>
+					<div class="layui-input-block">
+						<input type="text" name="representative" id="v5"  lay-verify="required|name" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">联系方式：</label>
+					<div class="layui-input-block">
+						<input type="text" name="contact" id="v6" lay-verify="required|phone" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册地址：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registeredaddress" id="v7"  lay-verify="required|registeredaddress" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册类型：</label>
+					<div class="layui-input-block">
+						<select name="registrationtype" id="v8" lay-verify="required|registrationtype">
+							<option value="0">--选择注册类型--</option>
+							<option value="100">100内资企业</option>
+							<option value="110">110国有企业</option>
+							<option value="120">120集体企业</option>
+							<option value="130">130股份合作企业</option>
+							<option value="140">140联营企业</option>
+							<option value="141">141国有联营企业</option>
+							<option value="142">142集体联营企业</option>
+							<option value="143">143国有与集体联营企业</option>
+							<option value="149">149其他联营企业</option>
+							<option value="150">150有限责任公司</option>
+							<option value="151">151国有独资公司</option>
+							<option value="159">159其他有限责任公司</option>
+							<option value="160">160股份有限公司</option>
+							<option value="170">170私营企业</option>
+							<option value="171">171私营独资企业</option>
+							<option value="172">172私营合伙企业</option>
+							<option value="173">173私营有限责任公司</option>
+							<option value="174">174私营股份有限公司</option>
+							<option value="190">190其他企业</option>
+							<option value="200">200港、澳、台商投资企业</option>
+							<option value="210">210合资经营企业（港或澳、台资）</option>
+							<option value="220">220合作经营企业（港或澳、台资）</option>
+							<option value="230">230港、澳、台商独资经营企业</option>
+							<option value="240">240港、澳、台商投资股份有限公司</option>
+							<option value="300">300外商投资企业</option>
+							<option value="310">310中外合资经营企业</option>
+							<option value="320">320中外合作经营企业</option>
+							<option value="330">330外资企业</option>
+							<option value="340">340外商投资股份有限公司</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registrationtime" id="v9"  lay-verify="required|date" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">注册资本(万元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="registeredcapital" id="v10" lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业入驻时间：</label>
+					<div class="layui-input-block">
+						<input type="text" name="intime" id="v11"  lay-verify="required|date" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this, istime: true, format: 'YYYY-MM-DD'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">是否软件企业：</label>
+					<div class="layui-input-block">
+						<input type="radio" name="issoftware" value="1" title="是" checked="">
+      					<input type="radio" name="issoftware" value="0" title="否">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">办公房间号：</label>
+					<div class="layui-input-block">
+						<input type="text" name="roomnumber" id="v13"  lay-verify="required|number" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">办公面积：</label>
+					<div class="layui-input-block">
+						<input type="text" name="officespace" id="v14" lay-verify="required|number" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租单价：</label>
+					<div class="layui-input-block">
+						<input type="text" name="unitprice" id="v15"  lay-verify="required|money" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">企业类型：</label>
+					<div class="layui-input-block">
+						<select name="enterprisetype" id="v16" lay-verify="required|enterprisetype">
+							<option value="0">--选择企业类型--</option>
+							<#if typelist?? && typelist?size gt 0>
+							<#list typelist as type>
+							<option value="${type.id}">${type.name}</option>
+							</#list>
+							</#if>
+						</select>
+					</div>
+				</div>
+				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script>
+			layui.use(['laydate','form','jquery'], function() {
+				var $ = layui.jquery;
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					name: function(value){
+					    if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(value)){
+					      return '不能有特殊字符';
+					    }
+					}
+					,superiorindustryid: function(value){
+						if(value==0){
+							return '请选择父级行业';
+						}
+					}
+					,subindustryid: function(value){
+						if(value==0){
+							return '请选择子级行业';
+						}
+					}
+					,industrycode: function(value){
+						if(value==0){
+							return '请选择行业';
+						}
+					},
+					enterprisetype: function(value){
+						if(value==0){
+							return '请选择企业类型';
+						}
+					},
+					registrationtype: function(value){
+						if(value==0){
+							return '请选择注册类型';
+						}
+					},
+ 					organizationalcode: function(value){
+						if($.trim(value)!=""){
+							if(!new RegExp("^[a-zA-Z0-9\s·]+$").test(value)){
+							      return '请输入正确的组织机构代码';
+							}
+						}
+					},
+					money: function(value){
+						if($.trim(value)!=""){
+							if(!new RegExp("^[0-9]+(\.[0-9]{1,4})?$").test(value)){
+							      return '请输入正确的金额';
+							}
+						}
+					},
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/enterprise/saveEnterpriseIn', data.field, function(data){
+							lock = false;
+							if(data.result){
+								parent.refresh_iframe();
+								layer.msg("保存成功", {time: 2000}, function(){
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+							}
+						});
+					}
+					return false;
+				});
+				
+				form.on('select(superiorindustryid)', function(data){
+					$.post('/data/getSubIndustryBySuperId',{superiorindustryid : data.value}, function(subindustry){
+						var content = "";
+						$('#v1_2 option').remove();
+						$('#v1_3 option').remove();
+						$('#v1_2').append("<option value='0' selected>--选择子级行业--</option>");
+						$('#v1_3').append("<option value='0' selected>--选择行业--</option>");
+						
+						for(var i = 0; i < subindustry.length; i++){
+							content += '<option value="' + subindustry[i].id +'">' + 
+										subindustry[i].sub_industry_code + 
+										subindustry[i].sub_industry_name +
+									   '</option>';
+						}
+						
+						$('#v1_2').append(content);
+						form.render('select');
+					});
+				});
+					
+				form.on('select(subindustryid)', function(data){
+					$.post('/data/getIndustryBySubId',{subindustryid : data.value}, function(industry){
+						var content = "";
+						$('#v1_3 option').remove();
+						$('#v1_3').append("<option value='0' selected>--选择行业--</option>");
+						
+						for(var i = 0; i < industry.length; i++){
+							content += '<option value="' + industry[i].industry_code +'">' + 
+										industry[i].industry_code + 
+										industry[i].industry_name +
+									   '</option>';
+						}
+						
+						$('#v1_3').append(content);
+						form.render('select');
+					});
+				});
+			});
+		</script>
+	</body>
+</html>
