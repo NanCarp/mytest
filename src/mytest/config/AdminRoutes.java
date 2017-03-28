@@ -3,6 +3,7 @@ package mytest.config;
 import com.jfinal.config.Routes;
 
 import mytest.controller.DataDictionaryController;
+import mytest.controller.EnterpriseController;
 import mytest.controller.HelloController;
 import mytest.controller.LoginController;
 
@@ -24,13 +25,17 @@ public class AdminRoutes extends Routes {
 
 		// 数据字典
 		add("/data", DataDictionaryController.class, "/data");
+		
+		//企业管理
+		add("/enterprise", EnterpriseController.class, "/enterprise");
+		
 		/*
 		 * //系统操作 add("/systom", SystomController.class, "/systom");
 		 * 
 		 * 
 		 * //园区管理 add("/parkmanage",ParkManageController.class,"/parkmanage");
 		 * 
-		 * //企业管理 add("/enterprise", EnterpriseController.class, "/enterprise");
+		 * 
 		 * 
 		 * //文件管理 add("/filemanage",FileManageController.class,"/filemanage");
 		 * 

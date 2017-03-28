@@ -1,5 +1,5 @@
 var navs = [{
-	"title": "基本元素",
+	"title": "系统管理",
 	"icon": "fa-cubes",
 	"spread": true,
 	"children": [{
@@ -54,14 +54,14 @@ var navs = [{
 		"href": "icheck.html"
 	}]
 }, {
-	"title": "地址本",
+	"title": "企业管理",
 	"icon": "fa-address-book",
 	"href": "",
 	"spread": false,
 	"children": [{
-		"title": "Github",
+		"title": "企业入驻管理",
 		"icon": "fa-github",
-		"href": "https://www.github.com/"
+		"href": "../enterprise/in_list"
 	}, {
 		"title": "QQ",
 		"icon": "fa-qq",
