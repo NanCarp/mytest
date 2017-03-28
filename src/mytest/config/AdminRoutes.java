@@ -4,7 +4,6 @@ import com.jfinal.config.Routes;
 
 import mytest.controller.DataDictionaryController;
 import mytest.controller.EnterpriseController;
-import mytest.controller.HelloController;
 import mytest.controller.LoginController;
 
 /**

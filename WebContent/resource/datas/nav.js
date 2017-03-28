@@ -14,14 +14,6 @@ var navs = [{
 		"title": "表格",
 		"icon": "&#xe63c;",
 		"href": "table.html"
-	}, {
-		"title": "导航",
-		"icon": "&#xe609;",
-		"href": "nav.html"
-	}, {
-		"title": "辅助性元素",
-		"icon": "&#xe60c;",
-		"href": "auxiliar.html"
 	}]
 }, {
 	"title": "数据字典",
@@ -30,7 +22,7 @@ var navs = [{
 	"children": [{
 		"title": "职位管理",
 		"icon": "fa-table",
-		"href": "../data/position_list"
+		"href": "/data/position_list"
 	}, {
 		"title": "Navbar组件",
 		"icon": "fa-navicon",
@@ -45,13 +37,21 @@ var navs = [{
 		"href": "paging.html"
 	}]
 }, {
-	"title": "第三方组件",
+	"title": "园区管理",
 	"icon": "&#x1002;",
 	"spread": false,
 	"children": [{
 		"title": "iCheck组件",
 		"icon": "fa-check-square-o",
 		"href": "icheck.html"
+	}, {
+		"title": "导航",
+		"icon": "&#xe609;",
+		"href": "nav.html"
+	}, {
+		"title": "辅助性元素",
+		"icon": "&#xe60c;",
+		"href": "auxiliar.html"
 	}]
 }, {
 	"title": "企业管理",
@@ -61,7 +61,7 @@ var navs = [{
 	"children": [{
 		"title": "企业入驻管理",
 		"icon": "fa-github",
-		"href": "../enterprise/in_list"
+		"href": "/enterprise/in_list"
 	}, {
 		"title": "QQ",
 		"icon": "fa-qq",
@@ -76,12 +76,7 @@ var navs = [{
 		"href": "http://weibo.com/"
 	}]
 }, {
-	"title": "这是一级导航",
-	"icon": "fa-stop-circle",
-	"href": "https://www.baidu.com",
-	"spread": false
-}, {
-	"title": "其他",
+	"title": "文件管理",
 	"icon": "fa-stop-circle",
 	"href": "#",
 	"spread": false,

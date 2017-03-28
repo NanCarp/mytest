@@ -16,46 +16,62 @@ import com.jfinal.plugin.activerecord.Record;
 
 import mytest.interceptor.ManageInterceptor;
 import mytest.service.LoginService;
+import mytest.utils.MD5Util;
 
 //@Before(ManageInterceptor.class)
-public class LoginController extends Controller{
-	
-	public void index(){
+public class LoginController extends Controller {
+
+	public void index() {
 		render("index.html");
 	}
-	
-	// 登录
-	public void login(){
+
+	// 登录页面
+	public void login() {
 		render("login.html");
 	}
-	
-	// 登录操作
-	public void adminLogin() throws NoSuchAlgorithmException, UnsupportedEncodingException{
+
+	/**
+	 * @description 登录操作
+	 * @throws NoSuchAlgorithmException
+	 * @throws UnsupportedEncodingException void 
+	 * @author liyu
+	 * @date 2017/03/28
+	 */
+	public void adminLogin() throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		// 登陆结果，默认false
+		boolean result = false;
+		// 登陆结果消息
+		String msg = new String();
+
+		// 登录页面提交的用户名、密码
 		String username = getPara("username");
 		String password = getPara("password");
-		
-		boolean result = false;
-		String msg = new String();
-		
-/*		Record admin = LoginService.getLoginInfo(username);
-		if(admin == null){
-			msg = "用户名或密码错误";
-		}else{
-			boolean v = MD5Util.validPassword(password, admin.getStr("password"));
-			if(v){
+		// 根据用户名，从数据库查询用户记录
+		Record user = LoginService.getLoginInfo(username);
+		// 用户存在
+		if (null != user) {
+			// 用户存在，校验密码
+			boolean isPassword = MD5Util.validatePassword(password, user.getStr("password"));
+			// 密码正确，登陆成功
+			if (isPassword) {
 				result = true;
 				msg = "登录成功";
-				getSession().setAttribute("admin", admin);
-				Cookie cookie = new Cookie("morality", ""+admin.getInt("id"));
-				cookie.setMaxAge(60*60*24*7);
-				cookie.setPath("/login/");
+				// 向session存储用户信息 
+				getSession().setAttribute("user", user);
+				// 创建cookie，一段时间内免登陆
+				Cookie cookie = new Cookie("morality", "" + user.getInt("id"));
+				cookie.setMaxAge(1000 * 60 * 60 * 24 * 7);// 7天免登陆
+				cookie.setPath("/login/");//？？
 				getResponse().addCookie(cookie);
-			}else{
-				msg = "用户名或密码错误";
 			}
-		}*/
+		} else {
+			// 用户不存在或者密码错误
+			msg = "用户名或密码错误";
+		}
+		
+		// 结果数据写入map，以json格式传给页面
 		Map<String, Object> responseMap = new HashMap<>();
-		responseMap.put("result", true);//写死	
+		responseMap.put("result", result);
 		responseMap.put("msg", "登陆成功");
 		renderJson(responseMap);
 	}
