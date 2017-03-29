@@ -18,7 +18,6 @@ import mytest.interceptor.ManageInterceptor;
 import mytest.service.LoginService;
 import mytest.utils.MD5Util;
 
-//@Before(ManageInterceptor.class)
 public class LoginController extends Controller {
 
 	/**
@@ -26,6 +25,7 @@ public class LoginController extends Controller {
 	 * @author liyu
 	 * @date 2017/03/28
 	 */
+	@Before(ManageInterceptor.class)
 	public void index() {
 		render("index.html");
 	}
