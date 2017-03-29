@@ -18,8 +18,8 @@ public class SystemController extends Controller{
 	/***********************模块管理************************/
 	// 模块列表
 	public void menulist(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if(mopids.indexOf("100")!=-1){
 			setAttr("_add", true);
@@ -76,8 +76,8 @@ public class SystemController extends Controller{
 	/***********************角色管理************************/
 	// 角色列表
 	public void rolelist(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if(mopids.indexOf("103")!=-1){
 			setAttr("_add", true);
@@ -148,11 +148,11 @@ public class SystemController extends Controller{
 		int rid = getParaToInt("rid");
 		renderJson(SystemService.saveAuthority(id, mid, rid));
 	}
-	/***********************模块管理************************/
-	// 模块列表
+	/***********************权限字典************************/
+	// 权限字典列表
 	public void authlist(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if(mopids.indexOf("107")!=-1){
 			setAttr("_add", true);

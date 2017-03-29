@@ -3,9 +3,9 @@ var navs = [{
 	"icon": "fa-cubes",
 	"spread": true,
 	"children": [{
-		"title": "按钮",
+		"title": "模块管理",
 		"icon": "&#xe641;",
-		"href": "button.html"
+		"href": "/system/menulist"
 	}, {
 		"title": "表单",
 		"icon": "&#xe63c;",

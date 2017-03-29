@@ -5,6 +5,7 @@ import com.jfinal.config.Routes;
 import mytest.controller.DataDictionaryController;
 import mytest.controller.EnterpriseController;
 import mytest.controller.LoginController;
+import mytest.controller.SystemController;
 
 /**
  * @ClassName: AdminRoutes
@@ -22,6 +23,9 @@ public class AdminRoutes extends Routes {
 		// 用户登录控制器
 		add("/manage", LoginController.class, "/admin");
 
+		//系统操作 
+		add("/system", SystemController.class, "/system");
+		
 		// 数据字典
 		add("/data", DataDictionaryController.class, "/data");
 		
