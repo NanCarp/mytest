@@ -46,7 +46,7 @@
 			var menuarr = mid.split(',');
 			init();
 			function init(){
-				$.post('/systom/allMenu', function(data){
+				$.post('/system/allMenu', function(data){
 					$(data).each(function(){
 						var str = {};
 						str["id"] = this.id;
@@ -81,7 +81,7 @@
 					}
 					if(lock){
 						lock = false;
-						$.post('/systom/saveAuthority', {'id':id,'mid':myArray.join(),'rid':rid}, function(data){
+						$.post('/system/saveAuthority', {'id':id,'mid':myArray.join(),'rid':rid}, function(data){
 								if(data){
 									parent.refresh_iframe();
 										layer.msg('保存成功', {time: 1000}, function(){

@@ -101,7 +101,7 @@
 				var lock = true;
 				form.on('submit(save)', function(data) {
 					if(lock){
-						$.post('/systom/saveAuth', data.field, function(data){
+						$.post('/system/saveAuth', data.field, function(data){
 							lock = false;
 							if(data.result){
 								parent.refresh_iframe();

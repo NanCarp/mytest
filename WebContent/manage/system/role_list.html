@@ -72,7 +72,7 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/systom/rolelist/'+e.curr);
+				            location.replace('/system/rolelist/'+e.curr);
 				        }
 				    }
 				});
@@ -80,17 +80,17 @@
 			 
 			 // 增加角色
 			 function _add(){
-				 parent.open_window('添加角色', '/systom/getRole', 540, 370);
+				 parent.open_window('添加角色', '/system/getRole', 540, 370);
 			 }
 			 
 			 // 编辑
 			 function _edit(id){
-				 parent.open_window('编辑角色', '/systom/getRole/'+id, 540, 370);
+				 parent.open_window('编辑角色', '/system/getRole/'+id, 540, 370);
 			 }
 			 
 			 // 权限
 			 function _authority(rid){
-				 parent.open_window('分配权限', '/systom/getAuthority/'+rid, 540, 370);
+				 parent.open_window('分配权限', '/system/getAuthority/'+rid, 540, 370);
 			 }
 			 
 			 // 删除
@@ -98,7 +98,7 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delRole/'+id, function(data){
+						$.post('/system/delRole/'+id, function(data){
 							if(data){
 								layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);

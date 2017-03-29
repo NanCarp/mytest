@@ -69,7 +69,7 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/systom/authlist/'+e.curr);
+				            location.replace('/system/authlist/'+e.curr);
 				        }
 				    }
 				});
@@ -77,12 +77,12 @@
 			 
 			 // 增加按钮
 			 function _add(){
-				 parent.open_window('注册按钮', '/systom/getAuth', 540, 370);
+				 parent.open_window('注册按钮', '/system/getAuth', 540, 370);
 			 }
 			 
 			 // 编辑
 			 function _edit(id){
-				 parent.open_window('编辑按钮', '/systom/getAuth/'+id, 540, 370);
+				 parent.open_window('编辑按钮', '/system/getAuth/'+id, 540, 370);
 			 }
 			 
 			 // 删除
@@ -90,7 +90,7 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delAuth/'+id, function(data){
+						$.post('/system/delAuth/'+id, function(data){
 							if(data){
 								layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);

@@ -7,9 +7,9 @@ var navs = [{
 		"icon": "&#xe641;",
 		"href": "/system/menulist"
 	}, {
-		"title": "表单",
+		"title": "角色管理",
 		"icon": "&#xe63c;",
-		"href": "form.html"
+		"href": "/system/rolelist"
 	}, {
 		"title": "表格",
 		"icon": "&#xe63c;",
