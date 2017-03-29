@@ -65,7 +65,7 @@
 				    curr: ${pageno},
 				    jump: function(e, first){ //触发分页后的回调
 				        if(!first){ //一定要加此判断，否则初始时会无限刷新
-				            location.replace('/systom/menulist/'+e.curr);
+				            location.replace('/system/menulist/'+e.curr);
 				        }
 				    }
 				});
@@ -73,12 +73,12 @@
 			 
 			 // 增加角色
 			 function _add(){
-				 parent.open_window('添加菜单', '/systom/getMenu', 540, 370);
+				 parent.open_window('添加菜单', '/system/getMenu', 540, 370);
 			 }
 			 
 			 // 编辑
 			 function _edit(id){
-				 parent.open_window('编辑角色', '/systom/getMenu/'+id, 540, 370);
+				 parent.open_window('编辑角色', '/system/getMenu/'+id, 540, 370);
 			 }
 			 
 			 // 删除
@@ -86,7 +86,7 @@
 				 layui.use('layer', function(){
 					 var layer = layui.layer;
 					 parent.actconfirm('确认要删除吗？', function(){
-						$.post('/systom/delMenu/'+id, function(data){
+						$.post('/system/delMenu/'+id, function(data){
 							if(data){
 								layer.msg('删除成功', {time: 1000}, function(){
 									location.replace(location.href);
