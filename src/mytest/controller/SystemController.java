@@ -68,7 +68,7 @@ public class SystemController extends Controller{
 		renderJson(result);
 	}
 	
-	// 所有菜单
+	// 所有菜单、按钮权限
 	public void allMenu(){
 		renderJson(SystemService.getAuthMenu());
 	}
@@ -130,14 +130,17 @@ public class SystemController extends Controller{
 	
 	// 权限分配
 	public void getAuthority(){
-		int rid = getParaToInt();
-		Record record = Db.findFirst("SELECT id,role_id,GROUP_CONCAT(menu_id) AS mid FROM t_role_details where role_id=?", rid);
-		String ms = Db.queryStr("SELECT module_power_id FROM t_role_permissions WHERE role_id = ?", rid);
-		if(record != null){
-			setAttr("id", record.getInt("id"));
-			setAttr("mid", record.getStr("mid")+","+ms);
+		// 角色id
+		int roleId = getParaToInt();
+		// 查询角色关联的菜单，GROUP_CONCAT(menu_id) 菜单id连接成字符串，逗号隔开
+		Record menus = Db.findFirst("SELECT id,role_id,GROUP_CONCAT(menu_id) AS menuIds FROM t_role_details where role_id=?", roleId);
+		// 查询角色关联的按钮，
+		String buttons = Db.queryStr("SELECT module_power_id FROM t_role_permissions WHERE role_id = ?", roleId);
+		if(menus != null){
+			setAttr("id", menus.getInt("id"));// TODO id用处不明
+			setAttr("menuIds", menus.getStr("menuIds")+","+buttons);// 菜单ids
 		}
-		setAttr("rid", rid);
+		setAttr("roleId", roleId);// 角色id
 		render("role_authority.html");
 	}
 
