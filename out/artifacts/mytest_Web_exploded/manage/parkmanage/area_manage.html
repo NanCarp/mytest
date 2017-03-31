@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>区域管理</title>
+</head>
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+	<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+	<style type="text/css">
+		.forpage{text-align: right;margin-top: 10px;}
+	</style>
+<body>
+	<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+			<form class="layui-form">
+				<div class="layui-input-block buildlist_0">
+					<select name="fstate" id="v0">
+				    	<option value="9" >--选择区域状态--</option>
+				    	<option value="1" <#if fstate==1>selected</#if>>已入驻</option>
+				    	<option value="0" <#if fstate==0>selected</#if>>未入驻</option>
+					</select>
+				</div>
+				<div class="layui-input-block buildlist_1">
+					<select name="direction" id="v1">
+				    	<option value="朝向" >--朝向--</option>
+				    	<option value="东" <#if direction=="东">selected</#if>>东</option>
+				    	<option value="南" <#if direction=="南">selected</#if>>南</option>
+				    	<option value="西" <#if direction=="西">selected</#if>>西</option>
+				    	<option value="北" <#if direction=="北">selected</#if>>北</option>
+					</select>
+				</div>
+				<input type="text" placeholder="请输入区域名" id="v2" name="areaname" lay-verify="areaname" class="layui-input buildlist_2" value="${areaname!}" maxlength="10">
+				<input type="text" placeholder="请输入公司名" id="v3" name="company_name" lay-verify="company_name" class="layui-input buildlist_3" value="${company_name!}"  maxlength="10">
+				<button class="layui-btn layui-btn-small buildlist_4 <#if _search??><#else>layui-btn-disabled</#if>" lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+				<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" id="add" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加区域信息</a>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</form>
+			</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend class="layui-field-box">区域列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>区域名</th>
+							<th>朝向</th>
+							<th>区域编号</th>
+							<th>楼号</th>
+							<th>层号 </th>
+							<th>面积/平方米</th>
+							<th>区域状态 </th>
+							<th>入驻公司</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<#if arealist?? && arealist?size gt 0>
+					<#list arealist as ae>
+						<tr>
+							<td>${ae_index+1}</td>
+							<td>${ae.area_name}</td>
+							<td>${ae.direction}</td>
+							<td>${ae.area_no}</td>
+							<td>${ae.numb}</td>
+							<td>${ae.floor_no}</td>
+							<td>${ae.area}</td>
+							<td>${ae.status?string('已入驻','未入驻')}</td>
+							<td>${ae.the_company!}</td>
+							<td>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if ae.the_company??>_click()<#else><#if _edit??>_edit(${ae.id})</#if></#if>">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${ae.id})</#if>">删除</a>
+								<a href="javascript:" class="layui-btn layui-btn-mini layui-btn-normal<#if _enterexit??><#else>layui-btn-disabled</#if>" onclick="<#if _enterexit??><#else>_enterexit(${ae.id})</#if>">入驻/退驻</a>
+							</td>
+						</tr>
+					</#list>
+					<#else>
+						<td colspan="10" style="text-align: center"><span>没有数据信息</span></td>	
+					</#if>
+					</tbody>
+				</table>
+			</div>
+			<div id="forpage" class="forpage"></div>
+		</fieldset>		
+	</div>
+</body>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+	var fstate = '${fstate!}',direction='${direction!}',areaname = '${areaname!}',company_name='${company_name!}';  
+	$(function(){
+		 laypage({
+		    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+		    pages: ${totalpage}, //总页数
+		    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+		    groups: 5, //连续显示分页数
+		    curr: ${pageno},
+		    jump: function(e, first){ //触发分页后的回调
+		        if(!first){ //一定要加此判断，否则初始时会无限刷新
+		            location.replace('/parkmanage/areamanage?pageno='+e.curr+'&fstate='+fstate+'&direction='+direction+'&areaname='+areaname+'&company_name='+company_name);
+		        }
+		    }
+		});
+	 });
+	function _add(){
+		parent.open_window('添加区域','/parkmanage/getArea',540, 370);
+		
+	}
+	function _edit(id){
+		parent.open_window('编辑区域','/parkmanage/getArea/'+id,540, 370);
+	}
+	function _enterexit(id){
+		parent.open_window('选择入驻公司','/parkmanage/getAreaCompany/'+id,560,260);
+	}
+	
+	function _delete(id){
+		 layui.use('layer', function(){
+			 var layer = layui.layer;
+			 parent.actconfirm('确认要删除吗？', function(){
+				$.post('/parkmanage/delArea/'+id, function(data){
+					if(data){
+						parent.layer.msg('删除成功', {time: 1000}, function(){
+							location.replace(location.href);
+						});
+					}else{
+						parent.layer.msg('删除失败', {time: 1000});
+					}
+				});
+			});				 
+		});    
+	 }
+	function _click(){
+		layui.use('layer',function(){
+			var layer = layui.layer;
+			parent.layer.msg('已入驻区域不可编辑',{time:2000},function(){})
+		})
+	}
+	
+	 layui.use(['form'], function() {
+			var form = layui.form(),
+			layer = layui.layer;
+			
+			 form.verify({
+				 areaname: function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+							return '请输入正确的区域名';
+						}
+					}
+				}
+			 ,company_name:function(val){
+				 if($.trim(val)!=''){
+					 if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+						 return '请输入正确的公司名';
+					 }
+				 }
+			 }
+			});  
+			
+			form.on('submit(_search)', function(data){
+				var fstate = data.field.fstate;
+				var direction = data.field.direction;
+				var areaname = data.field.areaname;
+				var company_name =data.field.company_name;
+				location.replace('/parkmanage/areamanage?pageno=1&fstate='+fstate+'&direction='+direction+'&areaname='+areaname+'&company_name='+company_name);
+				return false;
+			});
+		 })
+	</script>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+		<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+		<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+		<style type="text/css">
+			.forpage{text-align: right;margin-top: 10px;}
+		</style>
+		<title>查询统计 - 企业数据统计</title>
+	</head>
+	<body>
+		<div class="admin-main">
+			<blockquote class="layui-elem-quote">
+			<form class="layui-form">
+				<a class="layui-btn comlist_3 layui-btn-small <#if _search??><#else>layui-btn-disabled</#if>" onclick="<#if _search??>_search()<#else></#if>"><i class="layui-icon">&#xe615;</i> 查询</a>
+				<button class="layui-btn comlist_3 layui-btn-small <#if _export??><#else>layui-btn-disabled</#if>" lay-submit=""  lay-filter="_export" <#if _export??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe601;</i> 导出EXCEL</button>
+				<a href="javascript:location.replace('/statistic/comfind?type=2');" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</form>
+			</blockquote>
+			<fieldset class="layui-elem-field">
+				<legend>企业数据统计</legend>
+				<div class="layui-field-box">
+					<table class="site-table table-hover">
+						<thead>
+							<tr>
+								<th>序列</th>
+								<th width="150">企业名称</th>
+								<th width="150">企业类型</th>
+								<th>企业总收入(万元)</th>
+								<th>企业净利润(万元)</th>
+								<th>企业上缴税费(万元)</th>
+								<th>企业R&D投入(万元)</th>
+								<th>企业从业人员(人)</th>
+								<th>博士(人)</th>
+								<th>大专以上(人)</th>
+								<th>留学人员(人)</th>
+								<th>千人计划人数(人)</th>
+								<th>吸纳应届大学毕业生(人)</th>
+								<th>当年新增保险(个)</th>
+								<th>缴纳保险情况(个)</th>
+								<th>申请知识产权(个)</th>
+								<th>批准知识产权(个)</th>
+								<th>发明专利(个)</th>
+								<th>软件著作权(个)</th>
+								<th>软件产品(个)</th>
+								<th>操作</th>
+							</tr>
+						</thead>
+						<tbody>
+							<#if companylist?? && companylist?size gt 0>
+							<#list companylist as company>
+							<tr>
+								<td>${company_index+1}</td>
+								<td>${company.enterprise_name!}</td>
+								<td>${company.industry!}</td>
+								<td>${company.income!0.00}</td>
+								<td>${company.net_profit!0.00}</td>
+								<td>${company.taxation!0.00}</td>
+								<td>${company.investment!0.00}</td>
+								<td>${company.quantity!0}</td>
+								<td>${company.doctor!0}</td>
+								<td>${company.junior_college!0}</td>
+								<td>${company.returnees!0}</td>
+								<td>${company.thousand_talents_program!0}</td>
+								<td>${company.fresh_graduates!0}</td>
+								<td>${company.add_insurance!0}</td>
+								<td>${company.insurance!0}</td>
+								<td>${company.apply!0}</td>
+								<td>${company.approval!0}</td>
+								<td>${company.patent!0}</td>
+								<td>${company.copyright!0}</td>
+								<td>${company.software_product!0}</td>
+								<td>
+									<a onclick="<#if _download??>_download(${company.id})<#else></#if>" class="layui-btn layui-btn-danger layui-btn-mini <#if _download??><#else>layui-btn-disabled</#if>">下载</a>
+								</td>
+							</tr>
+							</#list>
+							<#else>
+							<tr>
+								<td colspan="21" style="text-align: center;"><span>没有数据信息</span></td>
+							</tr>
+							</#if>
+						</tbody>
+					</table>
+					<div class="forpage" id="forpage"></div>
+				</div>
+			</fieldset>
+		</div>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+		<script>
+ 			 $(function(){
+				 laypage({
+				    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+				    pages: ${totalpage}, //总页数
+				    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+				    groups: 5, //连续显示分页数
+				    curr: ${pageno},
+				    jump: function(e, first){ //触发分页后的回调
+				        if(!first){ //一定要加此判断，否则初始时会无限刷新
+				             location.replace('/statistic/companylist?pageno='+e.curr); 
+				        }
+				    }
+				});
+			 });  	 
+			 // 下载
+			 function _download(id){
+				 window.open('/statistic/exportWord/'+id, '_blank');
+			 }
+			 // 查询
+			 function _search(){
+				 parent.open_window_noshadow('查询企业信息', '/statistic/opensearch', 1500, 600);
+		
+			 }
+
+			 layui.use(['form'], function() {
+					var form = layui.form(),
+					layer = layui.layer;
+
+					// 导出EXCEL 
+					form.on('submit(_export)', function(data){
+						window.open('/statistic/exportCompany/', '_blank');
+						return false;
+					});
+					 
+				});
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,18 @@
+/* 楼区数据统计 */
+.forpage{text-align: right;margin-top: 10px;}
+.buildlist_0{width: 150px;margin: 0px;padding: 0;position: absolute;}
+.buildlist_0 input{height: 32px;}
+.buildlist_1{width: 150px;margin-left: 160px;padding: 0;position: absolute;}
+.buildlist_1 input{height: 32px;}
+.buildlist_2{width: 150px;height: 32px;margin-left: 320px;float: left;}
+.buildlist_3{width: 150px;height: 32px;margin-left: 10px;float: left;}
+.buildlist_4{margin-left: 10px;}
+.building_list_1{width: 150px;margin-left: 160px;float: left;}
+.building_list_2{width: 60px;height: 30px;margin-left: 320px; float: left;}
+
+
+/* 企业数据总览 */
+.comlist_1{width: 150px;height: 32px;float: left;}
+.comlist_2{width: 150px;height: 32px;margin-left: 10px;float: left;}
+.comlist_3{margin-left: 10px;}
+

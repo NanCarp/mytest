@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>缴费管理详情</title>
+</head>
+<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if payment??>
+				<input value="${payment.id}" name="id" type="hidden">
+				<input value="${payment.year}" name="year" type="hidden">
+				<input value="${payment.quarterly}" name="quarterly" type="hidden">
+				<input value="${payment.company_id}" name="company_id" type="hidden">
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_rent" id="v1"  lay-verify="required|should_pay_rent" value="${payment.should_pay_rent}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_rent" id="v1"  lay-verify="required|paid_rent" value="${payment.paid_rent}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="property_costs" id="v1"  lay-verify="required|property_costs" value="${payment.property_costs}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_property_charges" id="v1"  lay-verify="required|paid_property_charges" value="${payment.paid_property_charges}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_water" id="v1"  lay-verify="required|should_pay_water" value="${payment.should_pay_water}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="${payment.real_water_fee}" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+  				<#else>
+  				<div class="layui-form-item">
+					<label class="layui-form-label">年份：</label>
+					<div class="layui-input-block">
+						<input type="text" name="year" id="v1"  lay-verify="required|year" value="" autocomplete="off" class="layui-input" onclick="layui.laydate({elem: this,format: 'YYYY'})">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">季度：</label>
+					<div class="layui-input-block">
+						<select name="quarterly" lay-verify="required|quarterly">
+							<option value="0">--选择季度--</option>
+							<option value="第一季度">第一季度</option>
+							<option value="第二季度">第二季度</option>
+							<option value="第三季度">第三季度</option>
+							<option value="第四季度">第四季度</option>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">公司名：</label>
+					<div class="layui-input-block">
+						<select name="company_id" id="v4" lay-verify="company">
+							<option value="0">--请选择公司--</option>
+							<#list companyList as company>
+							<option value="${company.id}">${company.enterprise_name}</option>
+							</#list>
+						</select>
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_rent" id="v1"  lay-verify="required|should_pay_rent"  value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">房租实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_rent" id="v1"  lay-verify="required|paid_rent"  value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="property_costs" id="v1"  lay-verify="required|property_costs"  value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">物业费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="paid_property_charges" id="v1"  lay-verify="required|paid_property_charges"  value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费应缴(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="should_pay_water" id="v1"  lay-verify="required|should_pay_water" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+				<div class="layui-form-item">
+					<label class="layui-form-label">水费实收(元)：</label>
+					<div class="layui-input-block">
+						<input type="text" name="real_water_fee" id="v1"  lay-verify="required|real_water_fee" value="" autocomplete="off" class="layui-input">
+					</div>
+				</div>
+  				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+				
+				form.verify({
+					should_pay_rent:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请保留小数点后两位';
+						}
+					}
+				   ,paid_rent:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,property_costs:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,paid_property_charges:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,should_pay_water:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,real_water_fee:function(value){
+						if(!new RegExp("^[0-9]+(.[0-9]{1,2})?$").test(value)){
+							return '请输入数字';
+						}
+					}
+				   ,quarterly:function(value){
+					   if(value==0){
+						   return '请选择季度';
+					   }
+				   }
+				   ,company:function(value){
+					   if(value==0){
+						   return'请选择公司';
+					   }
+				   }
+				});     
+				
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/parkmanage/savePayment', data.field, function(data){
+							lock = false;
+							if(data.result){
+								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+								lock = true;
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

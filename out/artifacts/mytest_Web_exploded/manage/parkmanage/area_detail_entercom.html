@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>区域管理入驻退驻信息</title>
+</head>
+<meta charset="utf-8">
+	<meta name="renderer" content="webkit">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<meta name="apple-mobile-web-app-capable" content="yes">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+
+	<body>
+		<div style="margin: 15px;">
+			<form class="layui-form">
+				<#if list??>
+				<input id="id" name="id" type="hidden" value="${id}">
+				<div class="layui-form-item">
+					<label class="layui-form-label">入驻单位：</label>
+					<div class="layui-input-block">
+						<select name="company_name" id="v4" lay-verify="company">
+					    	<option value="选择单位" selected>--选择单位--</option>
+							<#list list as prise>
+							<#if prise.is_retreat == false>
+							<option value="${prise.enterprise_name}">${prise.enterprise_name}</option>
+							<#else>
+							</#if>
+							</#list>
+						</select>
+					</div>
+				</div>
+  				</#if>
+				<div class="layui-form-item">
+					<div class="layui-input-block">
+						<button class="layui-btn" style="width: 100%;" lay-submit="" lay-filter="save">保存</button>
+					</div>
+				</div>
+			</form>
+		</div>
+		<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+		<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+		<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
+		<script type="text/javascript" src="../../resource/layui/lay/modules/laydate.js"></script>
+		<script>
+			layui.use(['form'], function() {
+				var form = layui.form(),
+				layer = layui.layer;
+    
+				//监听提交
+				var lock = true;
+				form.on('submit(save)', function(data) {
+					if(lock){
+						$.post('/parkmanage/saveAreaCompany', data.field, function(data){
+							lock = false;
+							if(data.result){
+								layer.msg("保存成功", {time: 2000}, function(){
+									parent.refresh_iframe();
+									layer_close();
+								});
+							}else{
+								layer.msg("保存失败");
+								lock = true;
+							}
+						});
+					}
+					return false;
+				});
+			});
+		</script>
+	</body>
+</html>

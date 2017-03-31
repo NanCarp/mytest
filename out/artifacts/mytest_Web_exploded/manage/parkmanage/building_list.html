@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>楼宇管理</title>
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css"/>
+	<link rel="stylesheet" href="../../resource/morality/css/morality.css"/>
+	<style type="text/css">
+		.forpage{text-align: right;margin-top: 10px;}
+	</style>
+</head>
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote">
+			<form class="layui-form">
+				<div class="layui-input-block buildlist_0">
+					<select name="fstate" id="v0">
+				    	<option value="9" <#if fstate==9>selected</#if>>--选择楼层状态--</option>
+				    	<option value="1" <#if fstate==1>selected</#if>>已满</option>
+				    	<option value="0" <#if fstate==0>selected</#if>>未满</option>
+					</select>
+				</div>
+				<div class="layui-input-block buildlist_1">
+				<input type="text" placeholder="请输入楼号" id="v3" name="floorno" lay-verify="num" class="layui-input" value="${floorno!}" maxlength="10">
+				</div>
+				<button class="layui-btn layui-btn-small building_list_2 <#if _search??><#else>layui-btn-disabled</#if>" lay-submit="" <#if _search??><#else>disabled="disabled"</#if>><i class="layui-icon">&#xe615;</i> 查询</button>
+				<a href="javascript:;" class="layui-btn layui-btn-small" id="add" onclick="_add()"><i class="layui-icon">&#xe608;</i> 添加楼宇</a>
+				<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;">
+				<i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+				<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+			</form>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend class="layui-field-box">楼宇列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>大楼名</th>
+							<th>大楼性质</th>
+							<th>层编号</th>
+							<th>楼号</th>
+							<th>总面积/平方米</th>
+							<th>可用面积/平方米</th>
+							<th>大楼状态</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<#if buildinglist?? && buildinglist?size gt 0>
+					<#list buildinglist as building>
+						<tr>
+							<td>${building_index+1}</td>
+							<td>${building.name!}</td>
+							<td>${building.naturename!}</td>
+							<td>${building.floor_no!}</td>
+							<td>${building.building_NO!}</td>
+							<td>${building.total_area!}</td>
+							<td><#if building.usable lt 0>0<#else>${building.usable!}</#if></td>
+							<td><#if building.usable lt 0>已满<#elseif building.usable==0>已满<#else>未满</#if></td>
+							<td>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="_edit(${building.id})">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${building.id})</#if>">删除</a>
+							</td>
+						</#list>
+						<#else>
+							<td colspan="9" style="text-align: center"><span>没有数据信息</span></td>	
+						</tr>
+						</#if>	
+					</tbody>
+				</table>
+				<div id="forpage" class="forpage"></div>
+			</div>
+		</fieldset>	
+		</div>		
+	</div>
+</body>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+	var fstate='${fstate!}', floorno='${floorno!}';
+	$(function(){
+		 laypage({
+		    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+		    pages: ${totalpage}, //总页数
+		    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+		    groups: 5, //连续显示分页数
+		    curr: ${pageno},
+		    jump: function(e, first){ //触发分页后的回调
+		        if(!first){ //一定要加此判断，否则初始时会无限刷新
+		            location.replace('/parkmanage/building?pageno='+e.curr+'&fstate='+fstate+'&floorno='+floorno);
+		        }
+		    }
+		});
+	 });
+
+	function _add(){
+		parent.open_window('添加楼宇', '/parkmanage/getBuding', 540, 370);
+	}
+	function _edit(id){
+		parent.open_window("修改楼宇信息",'/parkmanage/getBuding/'+id, 540, 370);
+	}
+	 function _delete(id){
+		 layui.use('layer', function(){
+			 var layer = layui.layer;
+			 parent.actconfirm('确认要删除吗？', function(){
+				$.post('/parkmanage/delBuild/'+id, function(data){
+					if(data){
+						parent.layer.msg('删除成功', {time: 1000}, function(){
+							location.replace(location.href);
+						});
+					}else{
+						parent.layer.msg('删除失败', {time: 1000});
+					}
+				});
+			});				 
+		});    
+	 }
+	 layui.use(['form'], function() {
+			var form = layui.form(),
+			layer = layui.layer;
+			
+             form.verify({
+				num: function(val){
+					if($.trim(val)!=''){
+						if(!new RegExp("^[a-zA-Z0-9_\u4e00-\u9fa5\\s·]+$").test(val)){
+							return '请输入正确格式的编号';
+						}
+					}
+				}
+			});  
+			
+			form.on('submit(_search)', function(data){
+				var fstate = data.field.fstate;
+				var floorno = data.field.floorno;
+				floorno = encodeURI(floorno);
+				location.replace('/parkmanage/building?pageno=1&fstate='+fstate+'&floorno='+floorno);
+				return false;
+			});
+		 })
+	</script>
+</html>

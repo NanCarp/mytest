@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>通知公告</title>
+</head>
+	<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+	<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+	<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+	<link rel="stylesheet" href="../../resource/layui-admin/css/table.css" />
+	<style>
+		.forpage{text-align:right;margin-top: 10px;}
+	</style>
+<body>
+	<div class="admin-main">
+		<blockquote class="layui-elem-quote">
+			<a href="javascript:;" class="layui-btn layui-btn-small <#if _add??><#else>layui-btn-disabled</#if>" id="add" onclick="<#if _add??>_add()</#if>"><i class="layui-icon">&#xe608;</i> 添加通知公告</a>
+			<a href="javascript:location.replace(location.href);" title="刷新" class="layui-btn" style="float: right;height: 30px;line-height: 30px;"><i class="layui-icon" style="font-size: 18px; color: #FFF;">&#x1002;</i></a>
+			<span style="float: right;line-height:30px;">共有数据：<strong>${totalrow}</strong> 条</span>
+		</blockquote>
+		<fieldset class="layui-elem-field">
+			<legend class="layui-field-box">通知公告列表</legend>
+			<div class="layui-field-box">
+				<table class="site-table table-hover">
+					<thead>
+						<tr>
+							<th>序列</th>
+							<th>标题</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+					<tbody>
+					<#if noticelist?? && noticelist?size gt 0>
+					<#list noticelist as notice>
+						<tr>
+							<td>${notice_index+1}</td>
+							<td>${notice.title}</td>
+							<td>
+								<a href="javascript:" class="layui-btn layui-btn-mini <#if _edit??><#else>layui-btn-disabled</#if>" onclick="<#if _edit??>_edit(${notice.id})</#if>">编辑</a>
+								<a href="javascript:;" data-id="1" data-opt="del" class="layui-btn <#if _delete??>layui-btn-danger<#else>layui-btn-disabled</#if> layui-btn-mini" onclick="<#if _delete??>_delete(${notice.id})</#if>">删除</a>
+							</td>
+						</tr>
+					</#list>
+					<#else>
+						<td colspan="6" style="text-align: center"><span>没有数据信息</span></td>
+					</#if>	
+					</tbody>
+				</table>
+				<div id="forpage" class="forpage"></div>
+			</div>
+		</fieldset>		
+	</div>
+</body>
+	<script type="text/javascript" src="../../resource/layui/layui.js"></script>
+	<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
+	<script type="text/javascript" src="../../resource/laypage/laypage.js"></script>
+	<script>
+	$(function(){
+		laypage({
+		    cont: document.getElementById('forpage'), //容器。值支持id名、原生dom对象，jquery对象,
+		    pages: ${totalpage}, //总页数
+		    skin: '#5A98DE', //加载内置皮肤，也可以直接赋值16进制颜色值，如:#c00
+		    groups: 5, //连续显示分页数
+		    curr: ${pageno},
+		    jump: function(e, first){ //触发分页后的回调
+		        if(!first){ //一定要加此判断，否则初始时会无限刷新
+		            location.replace("/parkmanage/notice/"+e.curr);
+		        }
+		    }
+		});
+	});
+	function _add(){
+		parent.open_window("添加通知公告","/parkmanage/getNotice",700,500);
+	}
+	
+	function _edit(id){
+		parent.open_window("修改通知公告","/parkmanage/getNotice/"+id,700,500);
+	}
+	 function _delete(id){
+		 layui.use('layer', function(){
+			 var layer = layui.layer;
+			 parent.actconfirm('确认要删除吗？', function(){
+				$.post('/parkmanage/delNotice/'+id, function(data){
+					if(data){
+						parent.layer.msg('删除成功', {time: 1000}, function(){
+							location.replace(location.href);
+						});
+					}else{
+						parent.layer.msg('删除失败', {time: 1000});
+					}
+				});
+			});				 
+		});    
+	 }
+	</script>
+</html>
