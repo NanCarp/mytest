@@ -30,7 +30,8 @@ public class SystemController extends Controller{
 		if(mopids.indexOf("102")!=-1){
 			setAttr("_edit", true);
 		}
-		Integer pageno = getParaToInt()==null?1:getParaToInt();
+		// 分页 pageNo ,默认1
+		Integer pageno = getParaToInt(0,1);
 		Page<Record> page = SystemService.getMenuList(pageno, 16);
 		setAttr("pageno", page.getPageNumber());
 		setAttr("totalpage", page.getTotalPage());

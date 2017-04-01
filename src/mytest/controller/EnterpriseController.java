@@ -15,6 +15,7 @@ import com.jfinal.plugin.activerecord.Record;
 
 import mytest.service.DataDictionaryService;
 import mytest.service.EnterpriseService;
+import mytest.service.ParkManageService;
 
 /**
  * @desc 企业管理
@@ -31,14 +32,15 @@ public class EnterpriseController extends Controller {
 	 */
 	public void in_list() {
 		// 验证权限
-//		Record admin = getSessionAttr("admin");
-//		Integer rid = admin.getInt("role_id");
-//		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
-			setAttr("_add", true);
-			setAttr("_delete", true);
-			setAttr("_edit", true);
-			setAttr("_search", 1);
-			setAttr("_retreat", true);
+		// Record admin = getSessionAttr("admin");
+		// Integer rid = admin.getInt("role_id");
+		// String mopids = Db.queryStr("select module_power_id from
+		// t_role_permissions where role_id = ?", rid);
+		setAttr("_add", true);
+		setAttr("_delete", true);
+		setAttr("_edit", true);
+		setAttr("_search", 1);
+		setAttr("_retreat", true);
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
@@ -144,16 +146,15 @@ public class EnterpriseController extends Controller {
 		record.set("retreat_time", new Date());
 		record.set("modify_time", new Date());
 		boolean result = EnterpriseService.saveEnterprise(record);
-		/*
-		 * //企业离驻后，改变区域管理，区域状态为空，公司为空； String company_name =
-		 * ParkManageService.getEnterperiseById(getParaToInt("id")).getStr(
-		 * "enterprise_name"); boolean is_retreat =
-		 * ParkManageService.getEnterperiseById(getParaToInt("id")).getBoolean(
-		 * "is_retreat"); if(is_retreat == true){ Record rec =
-		 * Db.findFirst("select * from t_area where the_company = '"
-		 * +company_name+"' ").set("status", false).set("the_company", null);
-		 * Db.update("t_area",rec); }
-		 */
+
+		// 企业离驻后，改变区域管理，区域状态为空，公司为空；
+		String company_name = ParkManageService.getEnterperiseById(getParaToInt("id")).getStr("enterprise_name");
+		boolean is_retreat = ParkManageService.getEnterperiseById(getParaToInt("id")).getBoolean("is_retreat");
+		if (is_retreat == true) {
+			Record rec = Db.findFirst("select * from t_area where the_company = '" + company_name + "' ")
+					.set("status", false).set("the_company", null);
+			Db.update("t_area", rec);
+		}
 
 		renderJson("result", result);
 	}

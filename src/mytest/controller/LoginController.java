@@ -67,11 +67,8 @@ public class LoginController extends Controller {
 				msg = "登录成功";
 				// 向session存储用户信息 
 				getSession().setAttribute("user", user);
-				// 创建cookie，??
-				Cookie cookie = new Cookie("morality", "" + user.getInt("id"));
-				cookie.setMaxAge(1000 * 60 * 60 * 24 * 7);// 7天
-				cookie.setPath("/login/");//？？
-				getResponse().addCookie(cookie);
+				// 创建cookie，7天免登陆
+				setCookie("morality", "" + user.getInt("id"), 1000 * 60 * 60 * 24 * 7, "/login/");
 			}
 		} 
 		// 结果数据写入map，以json格式传给页面
