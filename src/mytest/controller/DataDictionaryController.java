@@ -103,8 +103,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void department_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("113") != -1) {
 			setAttr("_add", true);
@@ -182,8 +182,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void building_no_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("116") != -1) {
 			setAttr("_add", true);
@@ -261,8 +261,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void building_nature_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("119") != -1) {
 			setAttr("_add", true);
@@ -341,8 +341,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void superior_industry_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("122") != -1) {
 			setAttr("_add", true);
@@ -421,8 +421,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void sub_industry_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("125") != -1) {
 			setAttr("_add", true);
@@ -521,8 +521,8 @@ public class DataDictionaryController extends Controller {
 	 */
 	public void industry_code_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("128") != -1) {
 			setAttr("_add", true);

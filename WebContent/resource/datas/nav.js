@@ -24,34 +24,62 @@ var navs = [{
 		"icon": "fa-table",
 		"href": "/data/position_list"
 	}, {
-		"title": "Navbar组件",
+		"title": "部门管理",
+		"icon": "&#xe613;",
+		"href": "/data/department_list"
+	}, {
+		"title": "大楼编号管理",
 		"icon": "fa-navicon",
-		"href": "navbar.html"
+		"href": "/data/building_no_list"
 	}, {
-		"title": "Tab组件",
-		"icon": "&#xe62a;",
-		"href": "tab.html"
+		"title": "大楼性质管理",
+		"icon": "&#xe60b;",
+		"href": "/data/building_nature_list"
 	}, {
-		"title": "Laytpl+Laypage",
-		"icon": "&#xe628;",
-		"href": "paging.html"
+		"title": "行业代码父级",
+		"icon": "&#xe60a;",
+		"href": "/data/superior_industry_list"
+	}, {
+		"title": "行业代码子级",
+		"icon": "&#xe60a;",
+		"href": "/data/sub_industry_list"
+	}, {
+		"title": "行业代码",
+		"icon": "&#xe60a;",
+		"href": "/data/industry_code_list"
 	}]
 }, {
 	"title": "园区管理",
 	"icon": "&#x1002;",
 	"spread": false,
 	"children": [{
-		"title": "iCheck组件",
-		"icon": "fa-check-square-o",
-		"href": "icheck.html"
-	}, {
-		"title": "导航",
-		"icon": "&#xe609;",
-		"href": "nav.html"
-	}, {
-		"title": "辅助性元素",
-		"icon": "&#xe60c;",
-		"href": "auxiliar.html"
+		"title": "员工管理",
+		"icon": "&#xe613",
+		"href": "/parkmanage"
+	},{
+		"title": "楼宇管理",
+		"icon": "&#xe62d",
+		"href": "/parkmanage/building"
+	},{
+		"title": "区域管理",
+		"icon": "&#xe632",
+		"href": "/parkmanage/areamanage"
+	},{
+		"title": "缴费管理",
+		"icon": "&#xe62a",
+		"href": "/parkmanage/paymanage"
+	},{
+		"title": "安全管理检查记录",
+		"icon": "&#xe638",
+		"href": "/parkmanage/safetyagreement"
+	},{
+		"title": "园区安全责任书签订情况",
+		"icon": "&#xe60a",
+		"href": "/parkmanage/safetyrecord"
+	},{
+		"title": "通知公告",
+		"icon": "&#xe645",
+		"href": "/parkmanage/notice"
 	}]
 }, {
 	"title": "企业管理",
@@ -63,17 +91,21 @@ var navs = [{
 		"icon": "fa-github",
 		"href": "/enterprise/in_list"
 	}, {
-		"title": "QQ",
-		"icon": "fa-qq",
-		"href": "http://www.qq.com/"
+		"title": "离驻企业管理",
+		"icon": "&#xe640;",
+		"href": "/enterprise/retreat_list"
 	}, {
-		"title": "Fly社区",
-		"icon": "&#xe609;",
-		"href": "http://fly.layui.com/"
+		"title": "企业经济情况",
+		"icon": "&#xe62d;",
+		"href": "/enterprise/economy_list"
 	}, {
-		"title": "新浪微博",
-		"icon": "fa-weibo",
-		"href": "http://weibo.com/"
+		"title": "企业从业人员情况",
+		"icon": "&#xe612;",
+		"href": "/enterprise/practitioners_list"
+	}, {
+		"title": "企业知识产权情况",
+		"icon": "&#xe600;",
+		"href": "/enterprise/property_right_list"
 	}]
 }, {
 	"title": "文件管理",

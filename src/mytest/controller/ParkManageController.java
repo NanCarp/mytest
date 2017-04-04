@@ -40,8 +40,8 @@ public class ParkManageController extends Controller {
 	 * @desc 获得员工管理列表
 	 */
 	public void index(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("131")!=-1){
@@ -121,8 +121,8 @@ public class ParkManageController extends Controller {
 	 * @desc获得楼宇管理列表
 	 */
 	public void building(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("134")!=-1){
@@ -209,8 +209,8 @@ public class ParkManageController extends Controller {
 	 * @desc 获得区域管理列表
 	 */
 	public void areamanage(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("138")!=-1){
@@ -330,96 +330,14 @@ public class ParkManageController extends Controller {
 		boolean data = ParkManageService.delArea(id);
 		renderJson(data);	
 	}
-	
-	/***********************缴费管理************************/
-	/**
-	 * @desc 获得缴费管理列表
-	 */
-	public void paymanage(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
-		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
-		
-		if(mopids.indexOf("143")!=-1){
-			setAttr("_add", true);
-		}
-		if(mopids.indexOf("144")!=-1){
-			setAttr("_delete", true);
-		}
-		if(mopids.indexOf("145")!=-1){
-			setAttr("_edit", true);
-		}
-		if(mopids.indexOf("146")!=-1){
-			setAttr("_search", true);
-		}
-		
-		Integer year = getParaToInt("year");
-		Integer pageno = getParaToInt("pageno")==null?1:getParaToInt("pageno");
-		String quarterly = getPara("quarterly")==null?"选择季度":getPara("quarterly");
-		String company_name= getPara("company_name");
-		
-		setAttr("year", year);
-		setAttr("quarterly", quarterly);
-		setAttr("company_name", company_name);
-		Page<Record> page = ParkManageService.getPayment(pageno, 16, year, quarterly, company_name);
-		
-		setAttr("pageno", pageno);
-		setAttr("totalpage", page.getTotalPage());
-		setAttr("paylist", page.getList());
-		setAttr("totalrow", page.getTotalRow());
-		render("pay_manage.html");
-	}
-	
-	/**
-	 * @desc 添加以及修改缴费记录（界面弹窗过程）
-	 */
-	public void getPay(){
-		
-		Integer id = getParaToInt();
-		if(id!=null){
-			Record payment = ParkManageService.getPayment(id);
-			setAttr("payment", payment);
-		}
-		List companyList = ParkManageService.getEnterprise();
-		setAttr("companyList", companyList);
-		render("pay_detail.html");
-	}
-	
-	/**
-	 * @desc 修改以及添加缴费信息
-	 */
-	public void savePayment(){
-		Integer id = getParaToInt("id");
-		String year = getPara("year");
-		String quarterly = getPara("quarterly");		
-		Integer company_id = getParaToInt("company_id");
-		String company_name = ParkManageService.getCompanyName(company_id).getStr("enterprise_name");
-		Double should_pay_rent = Double.parseDouble(getPara("should_pay_rent"));
-		Double paid_rent = Double.parseDouble(getPara("paid_rent"));
-		Double property_costs = Double.parseDouble(getPara("property_costs"));
-		Double paid_property_charges = Double.parseDouble(getPara("paid_property_charges"));
-		Double should_pay_water = Double.parseDouble(getPara("should_pay_water"));
-		Double real_water_fee = Double.parseDouble(getPara("real_water_fee"));
-		boolean result = ParkManageService.savePayment(id, year, quarterly,company_id,company_name, should_pay_rent, paid_rent, property_costs, paid_property_charges, should_pay_water, real_water_fee);
-		renderJson("result",result);
-	}
-	
-	/**
-	 * @desc 根据id删除缴费信息
-	 */
-	public void delPay(){
-		Integer id =  getParaToInt();
-		boolean data =  ParkManageService.delPay(id);
-		renderJson(data);
-	}
 	/***********************安全管理检查记录************************/
 	
 	/**
 	 * @desc 获得安全管理检查列表
 	 */
 	public void safetyrecord(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("147")!=-1){
@@ -530,8 +448,8 @@ public class ParkManageController extends Controller {
 	 * @desc 获得安全责任书签订列表
 	 */
 	public void safetyagreement(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("143")!=-1){
@@ -620,8 +538,8 @@ public class ParkManageController extends Controller {
 	 * @desc 获得通知公告列表
 	 */
 	public void notice(){
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		
 		if(mopids.indexOf("154")!=-1){
@@ -659,8 +577,8 @@ public class ParkManageController extends Controller {
 	 * @desc 修改以及添加通知公告
 	 */
 	public void saveNotice(){
-		Record admin = getSessionAttr("admin");
-		String role_name = admin.getStr("role_name");
+		Record user = getSessionAttr("user");
+		String role_name = user.getStr("role_name");
 		Integer id = getParaToInt("id");
 		String title = getPara("title");
 		String content = getPara("cont");

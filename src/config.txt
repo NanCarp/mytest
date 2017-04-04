@@ -1,4 +1,4 @@
-jdbcUrl = jdbc:mysql://localhost:3306/mytest
+jdbcUrl = jdbc:mysql://localhost:3306/softwarePark
 user = root
 password = 123456
 

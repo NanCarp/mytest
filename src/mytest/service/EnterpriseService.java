@@ -1,8 +1,10 @@
 package mytest.service;
 
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import com.jfinal.plugin.activerecord.Db;
+import com.jfinal.plugin.activerecord.IAtom;
 import com.jfinal.plugin.activerecord.Page;
 import com.jfinal.plugin.activerecord.Record;
 
@@ -99,6 +101,33 @@ public class EnterpriseService {
 		}
 
 		return Db.paginate(pageno, pagesize, "SELECT * ", sqlExceptSelect);
+	}
+
+	public static boolean enterpriseRetreat(Record record) {
+		return Db.tx(new IAtom() {
+
+			@Override
+			public boolean run() throws SQLException {
+				boolean result = false;
+				int id = record.getInt("id");
+				result = Db.update("t_enterprise_in", record);
+				if (!result) {
+					return false;
+				}
+				// 企业离驻后，改变区域管理，区域状态为空，公司为空；
+				String company_name = Db.findById("t_enterprise_in", id).getStr("enterprise_name");
+				List<Record> areaList = Db.find("select * from t_area where the_company = '" + company_name + "' ");
+				for (Record area : areaList) {
+					area.set("status", false).set("the_company", null);
+					result = Db.update("t_area", area);
+					if (!result) {
+						return false;
+					}
+				}
+				return true;
+			}
+
+		});
 	}
 
 	/*********************** 企业经济情况管理 ************************/

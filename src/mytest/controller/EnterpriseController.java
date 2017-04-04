@@ -32,15 +32,24 @@ public class EnterpriseController extends Controller {
 	 */
 	public void in_list() {
 		// 验证权限
-		// Record admin = getSessionAttr("admin");
-		// Integer rid = admin.getInt("role_id");
-		// String mopids = Db.queryStr("select module_power_id from
-		// t_role_permissions where role_id = ?", rid);
-		setAttr("_add", true);
-		setAttr("_delete", true);
-		setAttr("_edit", true);
-		setAttr("_search", 1);
-		setAttr("_retreat", true);
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("158") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("159") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("160") != -1) {
+			setAttr("_edit", true);
+		}
+		if (mopids.indexOf("161") != -1) {
+			setAttr("_search", 1);
+		}
+		if (mopids.indexOf("162") != -1) {
+			setAttr("_retreat", true);
+		}
 
 		Integer pagesize = 16;
 		Integer pageno = getParaToInt("pageno") == null ? 1 : getParaToInt("pageno");
@@ -145,6 +154,8 @@ public class EnterpriseController extends Controller {
 		record.set("is_retreat", true);
 		record.set("retreat_time", new Date());
 		record.set("modify_time", new Date());
+		// boolean result = EnterpriseService.enterpriseRetreat(record);
+
 		boolean result = EnterpriseService.saveEnterprise(record);
 
 		// 企业离驻后，改变区域管理，区域状态为空，公司为空；
@@ -155,7 +166,6 @@ public class EnterpriseController extends Controller {
 					.set("status", false).set("the_company", null);
 			Db.update("t_area", rec);
 		}
-
 		renderJson("result", result);
 	}
 
@@ -167,8 +177,8 @@ public class EnterpriseController extends Controller {
 	 */
 	public void retreat_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("163") != -1) {
 			setAttr("_search", true);
@@ -218,8 +228,8 @@ public class EnterpriseController extends Controller {
 	 */
 	public void economy_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("165") != -1) {
 			setAttr("_add", true);
@@ -313,8 +323,8 @@ public class EnterpriseController extends Controller {
 	 */
 	public void practitioners_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("169") != -1) {
 			setAttr("_add", true);
@@ -412,8 +422,8 @@ public class EnterpriseController extends Controller {
 	 */
 	public void property_right_list() {
 		// 验证权限
-		Record admin = getSessionAttr("admin");
-		Integer rid = admin.getInt("role_id");
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
 		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
 		if (mopids.indexOf("173") != -1) {
 			setAttr("_add", true);
