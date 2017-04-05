@@ -26,7 +26,7 @@ public class LoginService {
 	}
 	
 	// 根据角色ID找出所有菜单
-	public static List<Record> getMenusByRid(int rid){
+	public static List<Record> getMenusByRoleId(int rid){
 		return Db.find("SELECT b.id, b.url, a.menu_id, a.role_id,b.icon, b.pid, b.name FROM t_role_details a LEFT JOIN t_menu b ON a.menu_id = b.id WHERE role_id = ?", rid);
 	}
 	

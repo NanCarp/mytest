@@ -4,21 +4,17 @@
 
 	<head>
 		<meta charset="utf-8">
-		<title>后台管理模板</title>
-		<meta name="renderer" content="webkit">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-		<meta name="apple-mobile-web-app-status-bar-style" content="black">
-		<meta name="apple-mobile-web-app-capable" content="yes">
-		<meta name="format-detection" content="telephone=no">
-
-		<link rel="stylesheet" href="../resource/plugins/layui/css/layui.css" media="all" />
-		<link rel="stylesheet" href="../resource/css/global.css" media="all">
-		<link rel="stylesheet" href="../resource/plugins/font-awesome/css/font-awesome.min.css">
-
+		<title>科技园企业管理系统</title>
+		<link rel="shortcut icon" href="/logo.ico" />
+		<link rel="stylesheet" href="../../resource/layui/css/layui.css" media="all" />
+		<link rel="stylesheet" href="../../resource/layui-admin/css/global.css" media="all">
+		<link rel="stylesheet" type="text/css" href="http://www.jq22.com/jquery/font-awesome.4.6.0.css">
+		<style type="text/css">
+			.top_font{font-size: 22px;color: #fff;margin-left: 15px;line-height: 65px;letter-spacing: 3px;}
+		</style>
 	</head>
 
-	<body>
+	<body style="min-width:400px;">
 		<div class="layui-layout layui-layout-admin" style="border-bottom: solid 5px #1aa094;">
 			<div class="layui-header header header-demo">
 				<div class="layui-main">
@@ -37,7 +33,7 @@
 						<li class="layui-nav-item">
 							<a href="javascript:;" class="admin-header-user">
 								<!-- <img src="images/0.jpg" /> -->
-								<span>admin</span>
+								<span>${user.name}</span>
 							</a>
 							<dl class="layui-nav-child">
 								<dd>
@@ -79,17 +75,12 @@
 					</p>
 				</div>
 			</div>
-			<div class="site-tree-mobile layui-hide">
-				<i class="layui-icon">&#xe602;</i>
-			</div>
-			<div class="site-mobile-shade"></div>
-			
-			<script type="text/javascript" src="../resource/plugins/layui/layui.js"></script>
-			<script type="text/javascript" src="../resource/datas/nav.js"></script>
+			<script type="text/javascript" src="../../resource/layui/layui.js"></script>
 			<script type="text/javascript" src="../../resource/morality/js/jquery.min.js"></script>
 			<script type="text/javascript" src="../../resource/morality/js/admin.js"></script>
-			<script src="../resource/js/index.js"></script>
+			<script src="../../resource/layui-admin/js/index.js"></script>
 			<script>
+				 var navs = ${navs!};
 			</script>
 		</div>
 	</body>

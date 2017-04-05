@@ -27,6 +27,44 @@ public class LoginController extends Controller {
 	 */
 	@Before(ManageInterceptor.class)
 	public void index() {
+		// 从 session 中读取 user
+		Record user = getSessionAttr("user");
+		// 转调了 HttpServletRequest.setAttribute(String, Object)，该方法可以将
+		// 各种数据传递给 View 并在 View 中显示出来
+		// 
+		setAttr("user", user);
+		// 根据用户权限，展示相应菜单
+		// 根据角色 ID 找出所有菜单
+		Integer roleId = user.getInt("role_id");
+		List<Record> menus = LoginService.getMenusByRoleId(roleId);
+		// 设置菜单列表的值
+		List<Object> menuList = new ArrayList<>();
+		for (Record menu : menus) {
+			// 设置父菜单的值
+			Map<String, Object> parentMenu = new HashMap<>();
+			if(menu.getInt("pid") == 0) {
+				parentMenu.put("title", menu.getStr("name"));
+				parentMenu.put("icon", menu.getStr("icon"));
+				parentMenu.put("spread", menu.getInt("id")==1?true:false);// 首菜单展开
+				// 根据父菜单 id 找到所有子菜单，设置子菜单的值
+				List<Object> childMenusList = new ArrayList<>();
+				for (Record menu2 : menus) {
+					Map<String, Object> childMap = new HashMap<>();
+					if (menu2.getInt("pid") == menu.getInt("menu_id")) {
+						childMap.put("title", menu2.getStr("name"));
+						childMap.put("icon", menu2.getStr("icon"));
+						childMap.put("href", menu2.getStr("url"));
+						childMenusList.add(childMap);
+					}
+				}
+				parentMenu.put("children", childMenusList);
+				menuList.add(parentMenu);
+			}
+		}
+		
+		//　菜单列表转成 Json，传递给 view
+		setAttr("navs", JsonKit.toJson(menuList));
+
 		render("index.html");
 	}
 
@@ -77,4 +115,6 @@ public class LoginController extends Controller {
 		responseMap.put("msg", msg);
 		renderJson(responseMap);
 	}
+	
+	
 }
