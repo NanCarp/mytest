@@ -4,6 +4,7 @@ import com.jfinal.config.Routes;
 
 import mytest.controller.DataDictionaryController;
 import mytest.controller.EnterpriseController;
+import mytest.controller.FileManageController;
 import mytest.controller.LoginController;
 import mytest.controller.ParkManageController;
 import mytest.controller.SystemController;
@@ -36,6 +37,9 @@ public class AdminRoutes extends Routes {
 		//企业管理
 		add("/enterprise", EnterpriseController.class, "/enterprise");
 		
+		//文件管理 
+		add("/filemanage",FileManageController.class,"/filemanage");
+		
 		/*
 		 * //系统操作 add("/systom", SystomController.class, "/systom");
 		 * 
@@ -44,7 +48,7 @@ public class AdminRoutes extends Routes {
 		 * 
 		 * 
 		 * 
-		 * //文件管理 add("/filemanage",FileManageController.class,"/filemanage");
+		 * 
 		 * 
 		 * //查询统计 add("/statistic",StatisticController.class,"/statistic");
 		 */
