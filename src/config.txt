@@ -1,9 +1,9 @@
-jdbcUrl = jdbc:mysql://localhost:3306/softwarePark
-user = root
-password = 123456
+#jdbcUrl = jdbc:mysql://localhost:3306/softwarePark
+#user = root
+#password = 123456
 
 filepath = D:/upload/morality/file/
 
-#jdbcUrl = jdbc:mysql://localhost:3306/mytest
-#user = root
-#password = root
+jdbcUrl = jdbc:mysql://localhost:3306/mytest
+user = root
+password = root

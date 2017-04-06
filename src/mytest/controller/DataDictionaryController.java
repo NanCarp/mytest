@@ -35,10 +35,20 @@ public class DataDictionaryController extends Controller {
 	 * @return void
 	 */
 	public void position_list() {
-		setAttr("_add", true);
-		setAttr("_delete", true);
-		setAttr("_edit", true);
-
+		// 验证权限
+		Record user = getSessionAttr("user");
+		Integer rid = user.getInt("role_id");
+		String mopids = Db.queryStr("select module_power_id from t_role_permissions where role_id = ?", rid);
+		if (mopids.indexOf("110") != -1) {
+			setAttr("_add", true);
+		}
+		if (mopids.indexOf("111") != -1) {
+			setAttr("_delete", true);
+		}
+		if (mopids.indexOf("112") != -1) {
+			setAttr("_edit", true);
+		}
+		
 		Integer pageno = getParaToInt() == null ? 1 : getParaToInt();
 		Page<Record> page = DataDictionaryService.getPositionList(pageno, 16);
 
